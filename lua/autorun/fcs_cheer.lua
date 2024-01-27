@@ -1,4 +1,5 @@
 
+local enabled = CreateConVar("fcscheer", 0, FCVAR_ARCHIVE+FCVAR_REPLICATED)
 
 --[[
 	eyes_updown
@@ -112,6 +113,8 @@ local facial = {
 }
 
 hook.Add("UpdateAnimation", "Cheer_UpdateAnimation", function(ply, vel)
+	if enabled:GetBool() then
+
 	if (ply.lastgen or 0) < CurTime() then
 		local tweak = 1/1
 		local ttime = math.Rand( 0.0, 2 )
@@ -184,6 +187,7 @@ hook.Add("UpdateAnimation", "Cheer_UpdateAnimation", function(ply, vel)
 	--		ply:SetFlexWeight( ply:GetFlexIDByName(FlexName), FlexWeight*ctime )
 	--	end
 	--end
+	end
 end)
 
 --hook.Add("MouthMoveAnimation", "Cheer_MouthMoveAnimation", function( ply )
@@ -205,11 +209,13 @@ end)
 if SERVER then
 	util.AddNetworkString("Cheer_RequestFace")
 	net.Receive("Cheer_RequestFace", function( len, ply )
-		local face = net.ReadString()
-		if face == "" or facial[face] then
-			ply:SetNW2String( "Cheer_Last", ply:GetNW2String("Cheer_Active", "") )
-			ply:SetNW2String( "Cheer_Active", face )
-			ply:SetNW2Float( "Cheer_ChangeTime", CurTime() )
+		if enabled:GetBool() then
+			local face = net.ReadString()
+			if face == "" or facial[face] then
+				ply:SetNW2String( "Cheer_Last", ply:GetNW2String("Cheer_Active", "") )
+				ply:SetNW2String( "Cheer_Active", face )
+				ply:SetNW2Float( "Cheer_ChangeTime", CurTime() )
+			end
 		end
 	end)
 end
@@ -217,6 +223,7 @@ end
 local lastalt = 0
 local function CheerUI()
 	if CUI and CUI:IsValid() then CUI:Remove() CUI = nil end
+	if !enabled:GetBool() then return end
 
 	local s = ScreenScaleH
 
@@ -248,7 +255,7 @@ local function CheerUI()
 end
 
 hook.Add("PlayerButtonDown", "Cheer_PlayerButtonDown", function( ply, key )
-	if CLIENT then
+	if CLIENT and enabled:GetBool() then
 		if key == KEY_LALT and IsFirstTimePredicted() then
 			--print("Hey", lastalt, CurTime()-lastalt)
 			if (CurTime()-lastalt) < 0.25 then
@@ -264,10 +271,8 @@ hook.Add("PlayerButtonDown", "Cheer_PlayerButtonDown", function( ply, key )
 		end
 	end
 end)
-hook.Add("Think", "Cheer_Think", function()
-	if CLIENT then
-	end
-end)
+-- hook.Add("Think", "Cheer_Think", function()
+-- end)
 
 if CLIENT then
 	hook.Add("PopulateToolMenu", "FCS_Cheer_MenuOptions", function()
@@ -275,15 +280,22 @@ if CLIENT then
 			panel:AddControl("header", {
 				description = "Change your characters emotion.",
 			})
-			panel:Help("There are no options, but there is a bug where the eyes may flicker.\nGive it a minute and should resolve itself, or try tabbing out for a second.\nThe cause is unknown.")
+			panel:AddControl("checkbox", {
+				label = "Enable Cheer",
+				command = "fcscheer",
+			})
+			panel:ControlHelp("Change level after changing this.\n")
 			panel:ControlHelp("Double-tap ALT to open the panel, or find it in the Context Menu.")
+			panel:Help("There is a bug where the eyes may flicker.\nGive it a minute and should resolve itself, or try tabbing out for a second.\nThe cause is unknown.")
 		end)
 	end)
-	list.Set( "DesktopWindows", "FCS_Cheer_Icon", {
-		title = "FCS Cheer",
-		icon = "icon16/emoticon_happy.png",
-		init = function( icon, window )
-			CheerUI()
-		end
-	} )
+	if enabled:GetBool() then
+		list.Set( "DesktopWindows", "FCS_Cheer_Icon", {
+			title = "FCS Cheer",
+			icon = "icon16/emoticon_happy.png",
+			init = function( icon, window )
+				CheerUI()
+			end
+		} )
+	end
 end
