@@ -1,7 +1,7 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "dannio\male07naked/uppr_diff_000_a_whiv"
-	"$bumpmap" "dannio\male07naked/bodynormal"
+	"$baseTexture" "fgut/naked/uppr_diff_000_a_whiv"
+	"$bumpmap" "fgut/naked/bodynormal"
 	"$surfaceprop" "flesh"
                 "$phong" "1"
 	"$phongexponent" "4"
