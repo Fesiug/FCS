@@ -284,7 +284,7 @@ if CLIENT then
 				label = "Enable Cheer",
 				command = "fcscheer",
 			})
-			panel:ControlHelp("Change level after changing this.\n")
+			panel:ControlHelp("You should change level after changing this.\n")
 			panel:ControlHelp("Double-tap ALT to open the panel, or find it in the Context Menu.")
 			panel:Help("There is a bug where the eyes may flicker.\nGive it a minute and should resolve itself, or try tabbing out for a second.\nThe cause is unknown.")
 		end)

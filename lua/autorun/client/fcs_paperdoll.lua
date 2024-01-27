@@ -60,7 +60,7 @@ if CLIENT then
 				label = "Enable Paper Doll",
 				command = "fcspaperdoll",
 			})
-			panel:ControlHelp("Several bugs right now, including:\n- Weird particle positions\n- Not hearing reload sounds\n- Odd first-person animations")
+			panel:ControlHelp("Several bugs from drawing the player right now, including:\n- Weird particle positions\n- Not hearing reload sounds\n- Odd first-person animations")
 			panel:ControlHelp("Press - and + to zoom in and out.")
 		end)
 	end)
