@@ -1,0 +1,21 @@
+vertexlitgeneric
+{
+$basetexture "fgut/naked/chell_legs_diffuse"
+$bumpmap "fgut/naked/chell_legs_normals"
+$phong 1
+$phongboost "3.5"
+$phongexponent "8"
+
+
+$phongtint "[.85 .85 1]"
+$phongfresnelranges "[.2 .5 5]"
+$nodecal 1
+$ambientocclusion 1
+$halflambert 1
+$diffuseexp "1.5"
+// $lightwarptexture "models/chell/skin_warp"
+$rimlight 1
+$rimlightboost 3
+$rimlightexponent 6
+$surfaceprop flesh
+}

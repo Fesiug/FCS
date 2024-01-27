@@ -1,0 +1,10 @@
+VertexLitGeneric
+{
+	"$basetexture"	"fgut\hostage_sheet"
+	"$bumpmap"      "fgut\hostage_sheet_n"
+
+	"$phong" "1"
+	"$phongexponent" "1"
+	"$phongboost" "0.3"
+ 	"$phongfresnelranges" "[1 0.5 0.1]"
+}

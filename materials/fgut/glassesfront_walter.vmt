@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitMaskedEnvMappedTexture
+	"$basetexture" "fgut\glassesfront_walter"
+    "$bumpmap"     "fgut\glass_n"
+	"$envmapmask"  "fgut\glassesfrontmask_walter"
+	"$envmap" "env_cubemap"
+	"$envmapcontrast" "1"
+	"$halflambert" 1
+}

@@ -1,0 +1,12 @@
+// envmaptint_fix
+"VertexLitGeneric"
+{
+	"$baseTexture" "fgut/hl2rp/nationalguard"
+	"$envmap" 			"env_cubemap"
+                "$bumpmap" "fgut/hl2rp/nationalguard_n"
+	"$normalmapalphaenvmapmask" 1
+	"$envmapcontrast" .20
+	"$envmapsaturation"0.9
+	"$envmaptint" "[ 0 0 0 ]"
+                "$halflambert" 1
+}

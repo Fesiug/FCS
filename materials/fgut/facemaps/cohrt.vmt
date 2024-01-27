@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitTexture
+	"$basetexture" "fgut\facemaps\cohrt"
+    //"$bumpmap"     "fgut\facemaps\cohrt_n"
+	"$envmapsphere" 1
+	"$halflambert" 1
+
+    "$phong" "1"
+	"$phongexponent" "20"
+	"$phongboost" "3"	
+	"$phongfresnelranges"	"[.1 0.2 1]"
+	"$blendtintbybasealpha" 1
+}

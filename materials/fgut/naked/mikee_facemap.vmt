@@ -1,0 +1,22 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "dannio\male07naked/mikee_facemap"
+	"$bumpmap" "dannio\male07naked/tets"
+	"$surfaceprop" "flesh"
+                "$phong" "1"
+	"$phongexponent" "4"
+	"$phongboost" ".0"	
+	"$phongfresnelranges"	"[.05 0.3 1]"
+	"$detail"             "models/weapons/c_arms_citizen/skin_detail"
+	"$detailscale"        "19"
+	"$detailblendfactor"  "0.2"
+	"$detailblendmode"    "0"
+	"$rimmask" "1"
+	"$halflambert" "1"		
+	//"$blendtintbybasealpha" 1
+
+	Proxies {
+		FCS_SkinTone {
+		}
+	}
+}

@@ -1,0 +1,7 @@
+"Teeth"
+{
+	"$basetexture" "fgut\female\fmouth"
+	"$model" 1
+	"$clientshader" "MouthShader"
+	"$halflambert" 1
+}

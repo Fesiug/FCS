@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$basetexture" 			"fgut/strpclothes/miner_w"
+	"$bumpmap" 				"fgut/strpclothes/miner_n"
+
+	$detail 				"fgut/strpclothes/noise_detail"
+	$detailscale 			"15"
+}

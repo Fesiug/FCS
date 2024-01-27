@@ -1,0 +1,38 @@
+vertexlitgeneric
+{
+$basetexture "fgut/naked/chell_torso_diffuse"
+$bumpmap "fgut/naked/chell_torso_normals"
+$phongexponenttexture "fgut/naked/chell_torso_normals"
+// $bumpmap "null-bumpmap"
+$nodecal 1
+$ambientocclusion 1
+$halflambert 1
+$diffuseexp "1.5"
+// $lightwarptexture "fgut/naked/skin_warp"
+$rimlight 1
+$rimlightboost 1.5
+$rimlightexponent 6
+$rimmask 1
+$surfaceprop flesh
+
+	"$phong" "1"
+	"$phongboost" "3.0"
+	"$phongexponent" "8"
+	"$phongfresnelranges"	"[.1 .5 1]"
+	
+	"$detail"             "models/weapons/c_arms_citizen/skin_detail"
+	"$detailscale"        "24"
+	"$detailblendfactor"  "0.5"
+	"$detailblendmode"    "0"
+	
+	"$phongtint" "[1 0.9 0.8]"
+	
+	//"$color2" "[0.32 0.36 0.4]"
+
+	Proxies {
+		FCS_SkinTone {
+			AreTheseHands 1
+		}
+	}
+
+}
