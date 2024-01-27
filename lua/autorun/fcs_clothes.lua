@@ -50,11 +50,14 @@ FCS.TL = {
 	FCS_GLOVES,
 }
 
+if SERVER then
 for i, v in ipairs( FCS.TL ) do
-	concommand.Add("fcs_drop_" .. FCS.TTS[v], function( ply, cmd )
+	concommand.Add("fcs_drop_" .. FCS.TTS[v]:lower(), function( ply, cmd )
+		if CLIENT then print("[FCS] You can't call this on the CLIENT realm.") debug.Trace() return end
 		if v == FCS_SHIRT or v == FCS_PANTS then return end
 		ply:FCSRemoveSlot( v )
 	end)
+end
 end
 
 FCS.Items = {}
