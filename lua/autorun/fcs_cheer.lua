@@ -1,5 +1,8 @@
 
 local enabled = CreateConVar("fcscheer", 0, FCVAR_ARCHIVE+FCVAR_REPLICATED)
+if CLIENT then
+	CreateClientConVar("fcscheer_chat", 1, true, true, "Emotions in chat messages (like :D ) will activate a cheer expression.")
+end
 
 --[[
 	eyes_updown
@@ -162,6 +165,43 @@ local facial = {
 		["right_mouth_drop"]		= 1,
 		["left_mouth_drop"]			= -1,
 	},
+	["sad"] = {
+		["right_corner_depressor"]	= 1,
+		["left_corner_depressor"]	= 1,
+		["chin_raiser"]				= 1,
+		["right_lid_droop"]			= 1,
+		["left_lid_droop"]			= 1,
+		["right_inner_raiser"]		= 1,
+		["left_inner_raiser"]		= 1,
+	},
+}
+
+local chat_to_facial = {
+	[":("] = "sad",
+	[":["] = "sad",
+	["=("] = "sad",
+	[":)"] = "smile",
+	[":]"] = "smile",
+	["=)"] = "smile",
+	[":D"] = "big_smile",
+	[">:)"] = "evil_smile",
+	[">:]"] = "evil_smile",
+	[">:D"] = "evil_smile",
+	[">=)"] = "evil_smile",
+	[">=]"] = "evil_smile",
+	[">=D"] = "evil_smile",
+	[">:("] = "annoyed",
+	[">:["] = "annoyed",
+	["D:<"] = "annoyed",
+	[":O"] = "surprised",
+	[":0"] = "surprised",
+	[":o"] = "surprised",
+	[":c"] = "wary",
+	[":I"] = "wary",
+	[":L"] = "wary",
+	[":|"] = "wary",
+	[":l"] = "wary",
+	[";)"] = "wink",
 }
 
 hook.Add("UpdateAnimation", "Cheer_UpdateAnimation", function(ply, vel)
@@ -285,6 +325,22 @@ if SERVER then
 			end
 		end
 	end)
+
+	hook.Add("PlayerSay", "Cheer_ChatToCheer", function(ply, text, isTeam)
+		if not enabled:GetBool() or isTeam or not ply:Alive() or ply:GetInfoNum("fcscheer_chat", 1) == 0 then return end
+		local cheer = nil
+		for k, v in pairs(chat_to_facial) do
+			if string.find(text, k, nil, true) then
+				cheer = v
+				break
+			end
+		end
+		if cheer then
+			ply:SetNW2String( "Cheer_Last", ply:GetNW2String("Cheer_Active", "") )
+			ply:SetNW2String( "Cheer_Active", cheer )
+			ply:SetNW2Float( "Cheer_ChangeTime", CurTime() )
+		end
+	end)
 end
 
 local lastalt = 0
@@ -325,7 +381,7 @@ hook.Add("PlayerButtonDown", "Cheer_PlayerButtonDown", function( ply, key )
 	if CLIENT and enabled:GetBool() then
 		if key == KEY_LALT and IsFirstTimePredicted() then
 			--print("Hey", lastalt, CurTime()-lastalt)
-			if (CurTime()-lastalt) < 0.25 then
+			if (CurTime() - lastalt) < 0.25 then
 				--print("Right!")
 				CheerUI()
 				lastalt = -math.huge
@@ -354,6 +410,12 @@ if CLIENT then
 			panel:ControlHelp("You should change level after changing this.\n")
 			panel:ControlHelp("Double-tap ALT to open the panel, or find it in the Context Menu.")
 			panel:Help("There is a bug where the eyes may flicker.\nGive it a minute and should resolve itself, or try tabbing out for a second.\nThe cause is unknown.")
+
+			panel:AddControl("checkbox", {
+				label = "Chat Emoticons Trigger Cheer",
+				command = "fcscheer_chat",
+			})
+			panel:Help("Client option to make certain emoticons like :D or :( trigger emotion on your character.")
 		end)
 	end)
 	if enabled:GetBool() then
