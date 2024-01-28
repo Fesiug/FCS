@@ -35,10 +35,14 @@ function ENT:Think()
 end
 
 function ENT:Use( ent )
-	local ID = self.ItemToGive
-	ent:FCSEquip( ID )
-	self:EmitSound( "items/ammopickup.wav", 70, 100, 1 )
-	self:Remove()
+	if ent:GetModel():find("fgut") then
+		local ID = self.ItemToGive
+		ent:FCSEquip( ID )
+		self:EmitSound( "items/ammopickup.wav", 70, 100, 1 )
+		self:Remove()
+	else
+		self:EmitSound( "items/medshotno1.wav", 70, 100, 1 )
+	end
 end
 
 function ENT:GetPreferredCarryAngles()
