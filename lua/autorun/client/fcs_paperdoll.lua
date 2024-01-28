@@ -43,6 +43,11 @@ hook.Add("HUDPaint", "TEST_HUDPaint", function()
 					nw2:DrawModel()
 				end
 			end
+
+			if IsValid(p:GetActiveWeapon()) then
+				p:GetActiveWeapon():DrawModel()
+			end
+
 			--render.SuppressEngineLighting( false )
 		troll = false
 		-- Flush ShouldDrawLocalPlayer cache, otherwise reload sounds and other stuff goes funny
