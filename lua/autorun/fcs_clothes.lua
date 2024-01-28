@@ -141,7 +141,6 @@ function PT:FCSEvaluateFlags()
 	end
 	
 	flags = flags:Left(-2)
-	print( flags )
 	self:SetNW2String("FCS_Flags", flags)
 end
 
@@ -522,30 +521,6 @@ do
 		Type = FCS_PANTS,
 		Flags = {
 			"overalls",
-		},
-		BoneMods = {
-			["rebel"] = {
-				["ValveBiped.Bip01_Spine4"] = {
-					scale = qv( su4 ),
-					translate = Vector( 0, 0, 0 ),
-				},
-				["ValveBiped.Bip01_Spine2"] = {
-					scale = qv( su2 ),
-					translate = Vector( 0, 0, 0 ),
-				},
-				["ValveBiped.Bip01_Spine1"] = {
-					scale = qv( su1 ),
-					--translate = Vector( 0, 0, 0 ),
-				},
-				["ValveBiped.Bip01_Spine"] = {
-					scale = qv( su0 ),
-					--translate = Vector( 0, 0, 0 ),
-				},
-				["ValveBiped.Bip01_Pelvis"] = {
-					scale = qv( sup ),
-					--translate = Vector( 0, 0, 0 ),
-				},
-			}
 		},
 		Model = "models/fgut/pants_overalls_06.mdl",
 	})
