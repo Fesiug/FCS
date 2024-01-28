@@ -35,7 +35,6 @@ hook.Add("HUDPaint", "TEST_HUDPaint", function()
 		local wasiton = false
 		troll = true
 			--render.SuppressEngineLighting( true )
-			--if p:IsEFlagSet( EF_NODRAW ) then wasiton = true p:RemoveEFlags( EF_NODRAW ) end
 			p:DrawModel()
 
 			for i, v in ipairs( FCS.TL ) do
@@ -44,9 +43,11 @@ hook.Add("HUDPaint", "TEST_HUDPaint", function()
 					nw2:DrawModel()
 				end
 			end
-			--if wasiton then p:AddEFlags( EF_NODRAW ) end
 			--render.SuppressEngineLighting( false )
 		troll = false
+		-- Flush ShouldDrawLocalPlayer cache, otherwise reload sounds and other stuff goes funny
+		cam.Start({})
+		cam.End()
 	cam.End3D()
 end)
 
