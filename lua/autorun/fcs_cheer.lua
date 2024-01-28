@@ -1,5 +1,5 @@
 
-local enabled = CreateConVar("fcscheer", 0, FCVAR_ARCHIVE+FCVAR_REPLICATED)
+local enabled = CreateConVar("fcscheer", 0, FCVAR_ARCHIVE + FCVAR_REPLICATED)
 if CLIENT then
 	CreateClientConVar("fcscheer_chat", 1, true, true, "Emotions in chat messages (like :D ) will activate a cheer expression.")
 end
@@ -204,8 +204,8 @@ local chat_to_facial = {
 	[";)"] = "wink",
 }
 
-hook.Add("UpdateAnimation", "Cheer_UpdateAnimation", function(ply, vel)
-	if enabled:GetBool() then
+hook.Add("UpdateAnimation", "Cheer_UpdateAnimation", function(ply, velocity, maxseqgroundspeed)
+	if enabled:GetBool() and (ply:GetNW2Float("Cheer_LockFlexes", 0) <= CurTime()) then
 
 	if (ply.lastgen or 0) < CurTime() then
 		local tweak = 1/1
@@ -300,16 +300,55 @@ hook.Add("UpdateAnimation", "Cheer_UpdateAnimation", function(ply, vel)
 		ply:SetFlexWeight( i, to )
 	end
 
-	--if cheer_active != "" and facial[cheer_active] then
-	--	for FlexName, FlexWeight in pairs( facial[cheer_active] ) do
-	--		ply:SetFlexWeight( ply:GetFlexIDByName(FlexName), FlexWeight*ctime )
-	--	end
-	--end
 	end
 
-	if CLIENT and (ply:IsSpeaking() or ply:VoiceVolume() == 0) then
+	if CLIENT and (ply:GetNW2Float("Cheer_LockFlexes", 0) > CurTime() or not (ply:IsSpeaking() and ply:VoiceVolume() > 0)) then
+		-- default UpdateAnimation behavior
+		local len = velocity:Length()
+		local movement = 1.0
+		if ( len > 0.2 ) then
+			movement = ( len / maxseqgroundspeed )
+		end
+		local rate = math.min( movement, 2 )
+		if ( ply:WaterLevel() >= 2 ) then
+			rate = math.max( rate, 0.5 )
+		elseif ( !ply:IsOnGround() && len >= 1000 ) then
+			rate = 0.1
+		end
+		ply:SetPlaybackRate( rate )
+		if ( ply:InVehicle() ) then
+			local Vehicle = ply:GetVehicle()
+			local Velocity = Vehicle:GetVelocity()
+			local fwd = Vehicle:GetUp()
+			local dp = fwd:Dot( Vector( 0, 0, 1 ) )
+			ply:SetPoseParameter( "vertical_velocity", ( dp < 0 && dp || 0 ) + fwd:Dot( Velocity ) * 0.005 )
+			local steer = Vehicle:GetPoseParameter( "vehicle_steer" )
+			steer = steer * 2 - 1
+			if ( Vehicle:GetClass() == "prop_vehicle_prisoner_pod" ) then steer = 0 ply:SetPoseParameter( "aim_yaw", math.NormalizeAngle( ply:GetAimVector():Angle().y - Vehicle:GetAngles().y - 90 ) ) end
+			ply:SetPoseParameter( "vehicle_steer", steer )
+		end
+
 		GAMEMODE:GrabEarAnimation( ply )
 		return true -- Block default mouth flapping so our flexes take effect
+	end
+end)
+
+local function is_lipsync_sound(snd)
+	return tobool(string.find(snd, "vo/")) -- eww
+end
+
+-- Kill manipulate_flex tempoarily when a voiceline is playing so engine lipsync can happen
+hook.Add("EntityEmitSound", "Cheer_CheckLipSync", function(data)
+	local ply = data.Entity
+	if enabled:GetBool() and IsValid(ply) and ply:IsPlayer() and ply:Alive()
+			and data.Channel == CHAN_VOICE and is_lipsync_sound(data.SoundName) then
+		ply:SetNW2Float( "Cheer_LockFlexes", CurTime() + (SoundDuration(data.SoundName) or 3))
+		for _, ent in pairs(ply:GetChildren()) do
+			if ent:GetClass() == "manipulate_flex" then
+				ent:Remove()
+				break
+			end
+		end
 	end
 end)
 
