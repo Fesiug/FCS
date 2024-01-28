@@ -15,6 +15,7 @@ end
 
 function ENT:SetupDataTables()
 	self:NetworkVar("String", 0, "ID")
+	self:NetworkVar("Entity", 0, "FCSOwner")
 end
 
 function ENT:GetItemTable()
@@ -23,12 +24,12 @@ end
 
 function ENT:Think()
 	if SERVER then
-		if self:GetParent() == NULL then
+		if self:GetFCSOwner() == NULL then
 			print( "Parent is gone. Removing self.", self, self:GetID() )
 			self:Remove()
 			return
 		end
-		local ply = self:GetParent()
+		local ply = self:GetFCSOwner()
 		self:DrawShadow( !ply:GetRagdollEntity():IsValid() )
 	end
 end
@@ -63,37 +64,40 @@ if CLIENT then
 				end
 			end
 		end
-		local ply = self:GetParent()
-		local rge = ply:GetRagdollEntity()
-		local SUPERDEATH = ply:GetNW2Entity("SUPERDEATH", NULL)
-		if SUPERDEATH:IsValid() then
-			rge = SUPERDEATH
-		end
-		if rge:IsValid() then
-			if !IsValid( self.FakeClothes ) then
-				self.FakeClothes = ClientsideModel( self:GetModel() )
-				FCS_CSModelTable[self.FakeClothes] = true
-				self.FakeClothes.RGE = rge
-				self.FakeClothes:AddEffects( EF_BONEMERGE )
-				self.FakeClothes:AddEffects( EF_BONEMERGE_FASTCULL )
-				self.FakeClothes:SetParent( rge )
-				self.FakeClothes:Spawn()
-				--self.FakeClothes:CreateShadow()
+		local ply = self:GetFCSOwner()
+		if ply:IsValid() then
+			self:SetParent( ply )
+			local rge = ply:GetRagdollEntity()
+			local SUPERDEATH = ply:GetNW2Entity("SUPERDEATH", NULL)
+			if SUPERDEATH:IsValid() then
+				rge = SUPERDEATH
 			end
-		else
-			if IsValid( self.FakeClothes ) then
-				--self.FakeClothes:DestroyShadow()
-				self.FakeClothes:Remove()
+			if rge:IsValid() then
+				if !IsValid( self.FakeClothes ) then
+					self.FakeClothes = ClientsideModel( self:GetModel() )
+					FCS_CSModelTable[self.FakeClothes] = true
+					self.FakeClothes.RGE = rge
+					self.FakeClothes:AddEffects( EF_BONEMERGE )
+					self.FakeClothes:AddEffects( EF_BONEMERGE_FASTCULL )
+					self.FakeClothes:SetParent( rge )
+					self.FakeClothes:Spawn()
+					--self.FakeClothes:CreateShadow()
+				end
+			else
+				if IsValid( self.FakeClothes ) then
+					--self.FakeClothes:DestroyShadow()
+					self.FakeClothes:Remove()
+				end
 			end
-		end
-		if ply:Alive() then
-			self:DrawModel()
-		else
-			return
-		end
-		if restoretable then
-			for i, v in pairs( restoretable ) do
-				self:SetBoneMatrix( i, v )
+			if ply:Alive() then
+				self:DrawModel()
+			else
+				return
+			end
+			if restoretable then
+				for i, v in pairs( restoretable ) do
+					self:SetBoneMatrix( i, v )
+				end
 			end
 		end
 	end
