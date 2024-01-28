@@ -6,7 +6,7 @@ end)
 local scaleme = 0.5
 
 local enable = CreateClientConVar("fcspaperdoll", 0, true, false)
-local clight = CreateClientConVar("fcspaperdoll_clight", 0, true, false)
+local clight = CreateClientConVar("fcspaperdoll_clight", 1, true, false)
 local zout = CreateClientConVar("fcspaperdoll_bind_zoomout", KEY_MINUS, true, false)
 local zin = CreateClientConVar("fcspaperdoll_bind_zoomin", KEY_EQUAL, true, false)
 
