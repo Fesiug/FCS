@@ -889,9 +889,3 @@ function FCS.Random( typee )
 	end
 	return selection[math.random(1, #selection)]
 end
-
-hook.Add( "PhysgunPickup", "TEST_AllowPlayerPickup", function( ply, ent )
-	if ( ply:IsAdmin() and ent:IsPlayer() ) then
-		return true
-	end
-end )
