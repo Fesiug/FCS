@@ -63,27 +63,35 @@ if CLIENT then
 			end
 		end
 		local ply = self:GetParent()
-		if ply:GetRagdollEntity():IsValid() then
+		local rge = ply:GetRagdollEntity()
+		local SUPERDEATH = ply:GetNW2Entity("SUPERDEATH", NULL)
+		if SUPERDEATH:IsValid() then
+			rge = SUPERDEATH
+		end
+		if rge:IsValid() then
 			if !IsValid( self.FakeClothes ) then
 				self.FakeClothes = ClientsideModel( self:GetModel() )
 				FCS_CSModelTable[self.FakeClothes] = true
-				self.FakeClothes.RGE = ply:GetRagdollEntity()
+				self.FakeClothes.RGE = rge
 				self.FakeClothes:AddEffects( EF_BONEMERGE )
-				self.FakeClothes:SetParent( ply:GetRagdollEntity() )
+				self.FakeClothes:SetParent( rge )
 				self.FakeClothes:Spawn()
 				self.FakeClothes:CreateShadow()
-				return
 			end
 		else
 			if IsValid( self.FakeClothes ) then
 				self.FakeClothes:DestroyShadow()
 				self.FakeClothes:Remove()
 			end
+		end
+		if ply:Alive() then
 			self:DrawModel()
-			if restoretable then
-				for i, v in pairs( restoretable ) do
-					self:SetBoneMatrix( i, v )
-				end
+		else
+			return
+		end
+		if restoretable then
+			for i, v in pairs( restoretable ) do
+				self:SetBoneMatrix( i, v )
 			end
 		end
 	end
