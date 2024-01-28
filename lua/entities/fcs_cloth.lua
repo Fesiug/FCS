@@ -67,6 +67,7 @@ if CLIENT then
 	function ENT:Draw()
 		local ply = self:GetFCSOwner()
 		if ply:IsValid() then
+			local item = self:GetItemTable()
 			-- Keep setting this in case of emergency
 			self:SetParent( ply )
 
@@ -88,6 +89,14 @@ if CLIENT then
 					self.FakeClothes:AddEffects( EF_BONEMERGE )
 					self.FakeClothes:AddEffects( EF_BONEMERGE_FASTCULL )
 					self.FakeClothes:SetParent( rge )
+
+					if item.Bodygroups then
+						for k, v in pairs(item.Bodygroups) do
+							print(k, v)
+							self.FakeClothes:SetBodygroup(k, v)
+						end
+					end
+
 					self.FakeClothes:Spawn()
 					--self.FakeClothes:CreateShadow()
 				end

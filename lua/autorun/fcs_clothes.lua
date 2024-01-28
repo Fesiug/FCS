@@ -206,6 +206,13 @@ function PT:FCSEquip( ID, DontDrop )
 	Fuck:SetParent(self)
 	Fuck:SetFCSOwner(self)
 	Fuck:SetSkin( ITEM.Skin or 0 )
+
+	if ITEM.Bodygroups then
+		for k, v in pairs(ITEM.Bodygroups) do
+			Fuck:SetBodygroup(k, v)
+		end
+	end
+
 	Fuck:Spawn()
 	self:SetNW2Entity(nw2, Fuck)
 
