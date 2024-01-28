@@ -38,34 +38,34 @@ if CLIENT then
 	local v1 = Vector(1,1,1)
 	FCS_CSModelTable = FCS_CSModelTable or {}
 	function ENT:Draw()
-		local bm = self:GetItemTable().BoneMods
-		local restoretable
-		if bm then
-			restoretable = {}
-			for k, v in pairs( bm ) do
-				if self:GetParent():FCSGetFlags()[k] then
-					for BoneName, BoneTask in pairs( v ) do
-						local BoneID = self:LookupBone( BoneName )
-						if !BoneID then continue end
-						local Matri = self:GetBoneMatrix( BoneID )
-						if !Matri then continue end
-						restoretable[BoneID] = Matrix( Matri )
-						if BoneTask.scale then
-							Matri:Scale( BoneTask.scale )
+		local ply = self:GetFCSOwner()
+		if ply:IsValid() then
+			local bm = self:GetItemTable().BoneMods
+			local restoretable
+			if bm then
+				restoretable = {}
+				for k, v in pairs( bm ) do
+					if ply:FCSGetFlags()[k] then
+						for BoneName, BoneTask in pairs( v ) do
+							local BoneID = self:LookupBone( BoneName )
+							if !BoneID then continue end
+							local Matri = self:GetBoneMatrix( BoneID )
+							if !Matri then continue end
+							restoretable[BoneID] = Matrix( Matri )
+							if BoneTask.scale then
+								Matri:Scale( BoneTask.scale )
+							end
+							if BoneTask.translate then
+								Matri:Translate( BoneTask.translate )
+							end
+							if BoneTask.rotate then
+								Matri:Rotate( BoneTask.rotate )
+							end
+							self:SetBoneMatrix( BoneID, Matri )
 						end
-						if BoneTask.translate then
-							Matri:Translate( BoneTask.translate )
-						end
-						if BoneTask.rotate then
-							Matri:Rotate( BoneTask.rotate )
-						end
-						self:SetBoneMatrix( BoneID, Matri )
 					end
 				end
 			end
-		end
-		local ply = self:GetFCSOwner()
-		if ply:IsValid() then
 			self:SetParent( ply )
 			local rge = ply:GetRagdollEntity()
 			local SUPERDEATH = ply:GetNW2Entity("SUPERDEATH", NULL)
@@ -90,6 +90,7 @@ if CLIENT then
 				end
 			end
 			if ply:Alive() then
+				self:InvalidateBoneCache()
 				self:DrawModel()
 			else
 				return
@@ -99,6 +100,8 @@ if CLIENT then
 					self:SetBoneMatrix( i, v )
 				end
 			end
+		else
+			print( ply, " is INVALID. What the fuck?!" )
 		end
 	end
 
