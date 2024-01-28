@@ -286,9 +286,15 @@ if SERVER then
 
 		if ply.LastModel != ply:GetModel() then
 			print("[FCS] Model changed, reevaluating", ply, ply:GetModel())
+			if ply:GetModel():find("fgut") then
+				ply:FCSEvaluateFlags()
+				ply:FCSEvaluateNaked()
+			else
+				for i, v in ipairs( FCS.TL ) do
+					ply:FCSRemoveSlot( v )
+				end
+			end
 			ply.LastModel = ply:GetModel()
-			ply:FCSEvaluateFlags()
-			ply:FCSEvaluateNaked()
 		end
 	end)
 end
