@@ -113,6 +113,8 @@ local facial = {
 }
 
 hook.Add("UpdateAnimation", "Cheer_UpdateAnimation", function(ply, vel)
+	if SERVER then return end
+
 	if enabled:GetBool() then
 
 	if (ply.lastgen or 0) < CurTime() then
@@ -157,13 +159,20 @@ hook.Add("UpdateAnimation", "Cheer_UpdateAnimation", function(ply, vel)
 		heh = funnytrace.HitPos
 	end
 
-	local MEOW = ply:GetAttachment( ply:LookupAttachment("eyes") ).Pos
-	local M2 = heh
+	-- local MEOW =ply :GetAttachment( ply:LookupAttachment("eyes") ).Pos
+	-- local M2 = heh
 
-	local Dir = (M2-MEOW):Angle()
+	-- local Dir = (M2-MEOW):Angle()
 
-	ply:SetPoseParameter( "head_pitch",	Dir.p )
-	ply:SetPoseParameter( "head_yaw",	Dir.y )
+	-- ply:SetPoseParameter( "head_pitch",	Dir.p )
+	-- ply:SetPoseParameter( "head_yaw",	Dir.y )
+
+	local v1 = (EyePos() - ply:GetAttachment( ply:LookupAttachment("eyes") ).Pos):GetNormalized()
+	local v2 = ply:GetRight()
+
+	local dot = v1:Dot(v2)
+
+	ply:SetPoseParameter( "head_yaw", dot * -75)
 	
 	local cheer_active = ply:GetNW2String( "Cheer_Active" )
 	local cheer_prev = ply:GetNW2String( "Cheer_Last" )
