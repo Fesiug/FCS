@@ -136,16 +136,34 @@ hook.Add("UpdateAnimation", "Cheer_UpdateAnimation", function(ply, vel)
 	a.y = a.y + ply.eye_rand_y_lerp
 	local funnytrace = {
 		start = ply:EyePos(),
-		endpos = ply:EyePos() + a:Forward()*1024,
+		endpos = ply:EyePos() + ply:EyeAngles():Forward()*1024,
 		filter = ply,
 	}
 
 	funnytrace = util.TraceLine( funnytrace )
-	--print( ply.eye_rand_p_lerp, ply.eye_rand_y_lerp )
-	--debugoverlay.Cross( funnytrace.HitPos, 4, 0.5, color_white, true )
-	ply:SetEyeTarget( funnytrace.HitPos )
-	--ply:SetEyeTarget( Vector( 0, 0, 0 ))
+	local fe = funnytrace.Entity
+	local heh
+	if fe:IsValid() and (fe:IsPlayer() or fe:IsNPC() or fe:IsNextBot()) and fe.EyePos then
+		ply:SetEyeTarget( fe:EyePos() )
+		heh = fe:EyePos()
+	else
+		local funnytrace = {
+			start = ply:EyePos(),
+			endpos = ply:EyePos() + a:Forward()*1024,
+			filter = ply,
+		}
+		funnytrace = util.TraceLine( funnytrace )
+		ply:SetEyeTarget( funnytrace.HitPos )
+		heh = funnytrace.HitPos
+	end
 
+	local MEOW = ply:GetAttachment( ply:LookupAttachment("eyes") ).Pos
+	local M2 = heh
+
+	local Dir = (M2-MEOW):Angle()
+
+	ply:SetPoseParameter( "head_pitch",	Dir.p )
+	ply:SetPoseParameter( "head_yaw",	Dir.y )
 	
 	local cheer_active = ply:GetNW2String( "Cheer_Active" )
 	local cheer_prev = ply:GetNW2String( "Cheer_Last" )
