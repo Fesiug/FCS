@@ -19,10 +19,20 @@ player_manager.AddValidHands( "STRP Male 07",					"models/fgut/chands_02.mdl", 0
 player_manager.AddValidHands( "STRP Male 08",					"models/fgut/chands_02.mdl", 0, "00000000" )
 player_manager.AddValidHands( "STRP Male 09",					"models/fgut/chands_02.mdl", 0, "00000000" )
 
---player_manager.AddValidModel( "STRP Female 01",					"models/fgut/female_01_01.mdl" )
---player_manager.AddValidHands( "STRP Female 01",					"models/fgut/chands_02.mdl", 0, "00000000" )
+player_manager.AddValidModel( "STRP Female 01",					"models/fgut/female_01_01.mdl" )
+player_manager.AddValidModel( "STRP Female 02",					"models/fgut/female_02_01.mdl" )
+player_manager.AddValidModel( "STRP Female 03",					"models/fgut/female_03_01.mdl" )
+player_manager.AddValidModel( "STRP Female 04",					"models/fgut/female_04_01.mdl" )
+player_manager.AddValidModel( "STRP Female 06",					"models/fgut/female_06_01.mdl" )
+player_manager.AddValidModel( "STRP Female 07",					"models/fgut/female_07_01.mdl" )
 
-FCS = {}
+player_manager.AddValidHands( "STRP Female 01",					"models/fgut/chands_02.mdl", 0, "00000000" )
+player_manager.AddValidHands( "STRP Female 02",					"models/fgut/chands_02.mdl", 0, "00000000" )
+player_manager.AddValidHands( "STRP Female 03",					"models/fgut/chands_02.mdl", 0, "00000000" )
+player_manager.AddValidHands( "STRP Female 04",					"models/fgut/chands_02.mdl", 0, "00000000" )
+player_manager.AddValidHands( "STRP Female 06",					"models/fgut/chands_02.mdl", 0, "00000000" )
+player_manager.AddValidHands( "STRP Female 07",					"models/fgut/chands_02.mdl", 0, "00000000" )
+
 FCS = {}
 FCS_SHIRT	= 0
 FCS_PANTS	= 1
@@ -30,7 +40,6 @@ FCS_EXO		= 2
 FCS_HAT		= 3
 FCS_SHOES	= 4
 FCS_GLOVES	= 5
-
 
 FCS.TTS = {
 	[FCS_SHIRT]		= "Shirt",
@@ -120,7 +129,19 @@ function PT:FCSEvaluateFlags()
 		flags = flags .. "female,"
 	end
 
-	if self:GetModel():find("male_01") then
+	if self:GetModel():find("female_01") then
+		flags = flags .. "female_01,"
+	elseif self:GetModel():find("female_02") then
+		flags = flags .. "female_02,"
+	elseif self:GetModel():find("female_03") then
+		flags = flags .. "female_03,"
+	elseif self:GetModel():find("female_04") then
+		flags = flags .. "female_04,"
+	elseif self:GetModel():find("female_06") then
+		flags = flags .. "female_06,"
+	elseif self:GetModel():find("female_07") then
+		flags = flags .. "female_07,"
+	elseif self:GetModel():find("male_01") then
 		flags = flags .. "male_01,"
 	elseif self:GetModel():find("male_02") then
 		flags = flags .. "male_02,"
@@ -225,14 +246,19 @@ end
 hook.Add( "PlayerSpawn", "FCS_PlayerSpawn", function( ply )
 	if ply:IsBot() then
 		timer.Simple( 0, function()
-		ply:SetModel( "models/fgut/male_0" .. math.random( 1, 9 ) .. "_01.mdl" )
-		ply:SetSkin( math.random( 1, ply:SkinCount()-1 ) )
-		ply:SetBodyGroups( "00000000000000000" )
+			if math.random(1, 2) == 1 then
+				ply:SetModel( "models/fgut/male_0" .. math.random( 1, 9 ) .. "_01.mdl" )
+			else
+				local super = math.random( 1, 6 )
+				if super == 5 then super = 7 end
+				ply:SetModel( "models/fgut/female_0" .. super .. "_01.mdl" )
+			end
+			ply:SetSkin( math.random( 1, ply:SkinCount()-1 ) )
+			ply:SetBodyGroups( "00000000000000000" )
 		end)
 	end
 end)
 hook.Add( "PlayerSetModel", "FCS_PlayerSetModel", function( ply )
-
 	timer.Simple( 0.1, function()
 		if ply:GetModel():Left(#"models/fgut") == "models/fgut" then
 			if !ply:FCSSlotOccupied( FCS_SHIRT ) then
@@ -242,6 +268,7 @@ hook.Add( "PlayerSetModel", "FCS_PlayerSetModel", function( ply )
 				ply:FCSEquip( "p_citizen1", true )
 			end
 			ply:FCSEvaluateNaked()
+			ply:FCSEvaluateFlags()
 		else
 			for i, v in ipairs( FCS.TL ) do
 				ply:FCSRemoveSlot( v )
@@ -664,7 +691,54 @@ if CLIENT then
 	local ebri_1 = { 1.5, 1.7, 1.8 }
 	local ebri_2 = { 1.4, 1.4, 1.5 }
 	local ebri_3 = { 1.4, 1.2, 1.5 }
+
+	local f_w_1 = qv( 1.2 )
+	local f_w_2 = { 1.3, 1.0, 1.0 }
+	local f_w_3 = { 1.3, 1.4, 1.6 }
+	local f_w_4 = { 1.6, 1.1, 1.1 }
+	local f_w_5 = qv( 2 )
+	
+	local f_d_1 = { 0.5, 0.4, 0.4 }
+	local f_d_2 = { 0.7, 0.65, 0.65 }
+	local f_d_3 = { 0.6, 0.5, 0.5 }
+	local f_d_4 = { 0.65, 0.55, 0.55 }
 	local TONES = {
+		["female_01"] = {
+			[0] = f_w_1,
+			[1] = f_w_1,
+			[2] = f_w_3,
+			[3] = f_w_4,
+			[4] = f_w_2,
+			[5] = f_w_1,
+		},
+		["female_02"] = {
+			[1] = f_w_4,
+			[2] = f_w_2,
+		},
+		["female_03"] = {
+			[0] = f_d_2,
+			[1] = f_d_2,
+			[2] = f_d_1,
+			[3] = f_d_3,
+			[4] = f_d_4,
+			[5] = f_d_3,
+			[6] = f_d_2,
+		},
+		["female_04"] = {
+			[1] = f_w_5,
+			[2] = f_w_4,
+		},
+		["female_06"] = {
+			[1] = f_d_2,
+			[3] = f_w_4,
+			[4] = f_w_2,
+		},
+		["female_07"] = {
+			[0] = f_d_2,
+			[1] = f_d_3,
+			[2] = f_d_2,
+			[3] = f_d_2,
+		},
 		["male_01"] = {
 			[0] = dark_1,
 			[1] = dark_2,
@@ -746,6 +820,10 @@ if CLIENT then
 			if ent:IsValid() and reader:IsValid() then
 				local curmdl = reader:GetModel():sub( 13, 19 )
 				local c_tone = TONES[curmdl]
+				if !c_tone then
+					curmdl = reader:GetModel():sub( 13, 21 )
+					c_tone = TONES[curmdl]
+				end
 				if c_tone then
 					local c_tone_skin = c_tone[reader:GetSkin()]
 					if c_tone_skin then
@@ -778,8 +856,8 @@ if CLIENT then
 				max = #EYEIRIS,
 			})
 			panel:ControlHelp([[
-				1. Brown
-				2. Dark Brown
+				1. Dark Brown
+				2. Light Brown
 				3. Black
 				4. Blue
 				5. Green

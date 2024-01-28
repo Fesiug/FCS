@@ -9,6 +9,7 @@ ENT.Spawnable = false
 
 function ENT:Initialize()
 	self:AddEffects( EF_BONEMERGE )
+	self:AddEffects( EF_BONEMERGE_FASTCULL )
 	self:AddEFlags( EFL_KEEP_ON_RECREATE_ENTITIES )
 end
 
@@ -74,13 +75,14 @@ if CLIENT then
 				FCS_CSModelTable[self.FakeClothes] = true
 				self.FakeClothes.RGE = rge
 				self.FakeClothes:AddEffects( EF_BONEMERGE )
+				self.FakeClothes:AddEffects( EF_BONEMERGE_FASTCULL )
 				self.FakeClothes:SetParent( rge )
 				self.FakeClothes:Spawn()
-				self.FakeClothes:CreateShadow()
+				--self.FakeClothes:CreateShadow()
 			end
 		else
 			if IsValid( self.FakeClothes ) then
-				self.FakeClothes:DestroyShadow()
+				--self.FakeClothes:DestroyShadow()
 				self.FakeClothes:Remove()
 			end
 		end
@@ -98,7 +100,7 @@ if CLIENT then
 
 	function ENT:OnRemove()
 		if IsValid( self.FakeClothes ) then
-			self.FakeClothes:DestroyShadow()
+			--self.FakeClothes:DestroyShadow()
 			self.FakeClothes:Remove()
 		end
 	end

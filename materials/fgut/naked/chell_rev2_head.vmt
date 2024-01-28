@@ -18,4 +18,10 @@ $rimlightboost 1
 $rimlightexponent 6
 $surfaceprop flesh
 
+
+	Proxies {
+		FCS_SkinTone {
+		}
+	}
+
 }

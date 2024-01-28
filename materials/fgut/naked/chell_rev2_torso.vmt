@@ -2,7 +2,7 @@ vertexlitgeneric
 {
 $basetexture "fgut/naked/chell_torso_diffuse"
 $bumpmap "fgut/naked/chell_torso_normals"
-$phong 1
+$phong 0
 $phongboost "3.5"
 $phongexponent "8"
 
@@ -17,4 +17,9 @@ $rimlight 1
 $rimlightboost 2
 $rimlightexponent 6
 $surfaceprop flesh
+
+	Proxies {
+		FCS_SkinTone {
+		}
+	}
 }
