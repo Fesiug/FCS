@@ -2,7 +2,7 @@ vertexlitgeneric
 {
 $basetexture "fgut/naked/chell_torso_diffuse"
 $bumpmap "fgut/naked/chell_torso_normals"
-$phong 0
+$phong 1
 $phongboost "3.5"
 $phongexponent "8"
 
