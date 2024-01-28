@@ -109,7 +109,59 @@ local facial = {
 		["left_outer_raiser"]		= 0.5,
 		["right_inner_raiser"]		= -0.5,
 		["left_inner_raiser"]		= -0.5,
-	}
+	},
+	["wink"] = {
+		["left_stretcher"] = 0,
+		["right_stretcher"] = 0,
+		["left_corner_puller"] = 0.3,
+		["right_corner_puller"] = 0.3,
+		["right_cheek_raiser"]		= 1,
+		["left_cheek_raiser"]		= 1,
+		["right_lid_closer"]		= 0.9,
+	},
+	["evil_smile"] = {
+		["right_corner_depressor"]	= 0.6,
+		["left_corner_depressor"]	= 0.6,
+		["presser"]					= 0,
+		["right_lowerer"]		= 1,
+		["left_lowerer"]		= 1,
+		["right_lid_tightener"]		= 0.6,
+		["left_lid_tightener"]		= 0.6,
+		["right_lid_closer"]		= 0.0,
+		["left_lid_closer"]		= 0.0,
+		["right_outer_raiser"]		= 0.5,
+		["left_outer_raiser"]		= 0.5,
+		["right_inner_raiser"]		= 0,
+		["left_inner_raiser"]		= 0,
+
+		["left_stretcher"] = 0,
+		["right_stretcher"] = 0,
+		["left_corner_puller"] = 0.3,
+		["right_corner_puller"] = 0.3,
+		["right_cheek_raiser"]		= 1,
+		["left_cheek_raiser"]		= 1,
+		["smile"] = 1,
+	},
+	["surprised"] = {
+		["right_lid_raiser"]		= 1,
+		["left_lid_raiser"]			= 1,
+		["right_inner_raiser"]		= 1,
+		["left_inner_raiser"]		= 1,
+		["right_outer_raiser"]		= 0.58,
+		["left_outer_raiser"]		= 0.56,
+		["left_corner_puller"]		= 1,
+		["right_corner_puller"]		= 1,
+		["right_corner_depressor"]	= 1,
+		["left_corner_depressor"]	= 1,
+		["right_part"]				= 1,
+		["left_part"]				= 1,
+		["right_stretcher"]			= 1,
+		["left_stretcher"]			= 1,
+		["jaw_clencher"]			= 1,
+		["jaw_drop"]				= 1,
+		["right_mouth_drop"]		= 1,
+		["left_mouth_drop"]			= -1,
+	},
 }
 
 hook.Add("UpdateAnimation", "Cheer_UpdateAnimation", function(ply, vel)
@@ -214,23 +266,12 @@ hook.Add("UpdateAnimation", "Cheer_UpdateAnimation", function(ply, vel)
 	--	end
 	--end
 	end
-end)
 
---hook.Add("MouthMoveAnimation", "Cheer_MouthMoveAnimation", function( ply )
-	-- this doesn't work
-	--ply.VCL = ply:VoiceVolume()--math.Approach( ply.VCL or 0, ply:VoiceVolume(), FrameTime() / 1 )
-	--ply:SetFlexWeight( ply:GetFlexIDByName("right_lowerer"), ply.VCL )
-	--ply:SetFlexWeight( ply:GetFlexIDByName("left_lowerer"), ply.VCL )
-	--ply:SetFlexWeight( ply:GetFlexIDByName("right_funneler"), ply.VCL )
-	--ply:SetFlexWeight( ply:GetFlexIDByName("left_funneler"), ply.VCL )
-	--ply:SetFlexWeight( ply:GetFlexIDByName("right_stretcher"), ply.VCL )
-	--ply:SetFlexWeight( ply:GetFlexIDByName("left_stretcher"), ply.VCL )
-	--ply:SetFlexWeight( ply:GetFlexIDByName("right_mouth_drop"), ply.VCL )
-	--ply:SetFlexWeight( ply:GetFlexIDByName("left_mouth_drop"), ply.VCL )
-	--ply:SetFlexWeight( ply:GetFlexIDByName("right_part"), ply.VCL )
-	--ply:SetFlexWeight( ply:GetFlexIDByName("left_part"), ply.VCL )
-	--ply:SetFlexWeight( ply:GetFlexIDByName("jaw_drop"), ply.VCL )
---end)
+	if CLIENT and (ply:IsSpeaking() or ply:VoiceVolume() == 0) then
+		GAMEMODE:GrabEarAnimation( ply )
+		return true -- Block default mouth flapping so our flexes take effect
+	end
+end)
 
 if SERVER then
 	util.AddNetworkString("Cheer_RequestFace")
