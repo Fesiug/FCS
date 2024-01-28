@@ -34,30 +34,70 @@ player_manager.AddValidHands( "STRP Female 06",					"models/fgut/chands_02.mdl",
 player_manager.AddValidHands( "STRP Female 07",					"models/fgut/chands_02.mdl", 0, "00000000" )
 
 FCS = {}
-FCS_SHIRT	= 0
-FCS_PANTS	= 1
-FCS_EXO		= 2
-FCS_HAT		= 3
-FCS_SHOES	= 4
-FCS_GLOVES	= 5
 
-FCS.TTS = {
-	[FCS_SHIRT]		= "Shirt",
-	[FCS_PANTS]		= "Pants",
-	[FCS_EXO]		= "Exo",
-	[FCS_HAT]		= "Hat",
-	[FCS_SHOES]		= "Shoes",
-	[FCS_GLOVES]	= "Gloves",
-}
+-- Upper Body
+FCS_SHIRT	= 1
+FCS_EXO		= 2 -- body armor etc.
+FCS_GLOVES	= 4
+
+-- Lower Body
+FCS_PANTS	= 8
+FCS_SHOES	= 16
+
+-- Head
+FCS_HAT		= 32 -- top of head
+FCS_EYES	= 64
+FCS_MOUTH	= 128
+FCS_EARS	= 256
+
+FCS_LAST_SLOT = 256
 
 FCS.TL = {
 	FCS_SHIRT,
-	FCS_PANTS,
 	FCS_EXO,
-	FCS_HAT,
-	FCS_SHOES,
 	FCS_GLOVES,
+
+	-- Lower Body
+	FCS_PANTS,
+	FCS_SHOES,
+
+	-- Head
+	FCS_HAT,
+	FCS_EYES,
+	FCS_MOUTH,
+	FCS_EARS,
 }
+
+FCS.TTS = {
+	[FCS_SHIRT]		= "Shirt",
+	[FCS_EXO]		= "Exo",
+	[FCS_GLOVES]	= "Gloves",
+
+	[FCS_PANTS]		= "Pants",
+	[FCS_SHOES]		= "Shoes",
+
+	[FCS_HAT]		= "Hat",
+	[FCS_EYES]		= "Eyes",
+	[FCS_MOUTH]		= "Mouth",
+	[FCS_EARS]		= "Ears",
+}
+
+function FCS.SlotToList(b)
+	local slots = {}
+	local i = 1
+	while b > 0 do
+		if b % 2 == 1 then
+			table.insert(slots, i)
+		end
+		b = bit.rshift(b, 1)
+		i = i + 1
+	end
+	return slots
+end
+
+function FCS.SlotToName(i)
+	return FCS.TTS[FCS.TL[i]]
+end
 
 if SERVER then
 for i, v in ipairs( FCS.TL ) do
@@ -85,7 +125,7 @@ function FCS.DefineItem( ID, Table )
 		tent.Spawnable = true
 		tent.AdminOnly = false
 		tent.ItemToGive = ID
-		tent.Category = "Gutting - " .. FCS.TTS[Table.Type]
+		tent.Category = "FCS - " .. (Table.Category or FCS.TTS[Table.Type])
 
 		scripted_ents.Register( tent, "fcs_item_" .. ID )
 	end
@@ -110,18 +150,20 @@ end
 
 function PT:FCSEvaluateFlags()
 	local flags = ""
-	for i=0, FCS_GLOVES do
-		local nw2 = "FCS_" .. FCS.TTS[ i ]
-		if self:GetNW2Entity(nw2, NULL):IsValid() then
-			local ent = self:GetNW2Entity(nw2, NULL)
+	local checked = {}
+	for i, slot in ipairs(FCS.TL) do
+		local nw2 = "FCS_" .. FCS.TTS[slot]
+		local ent = self:GetNW2Entity(nw2, NULL)
+		if IsValid(ent) and not checked[ent] then
 			local ID = ent:GetID()
-			local TABLE = FCS.GetItem( ID )
+			local TABLE = FCS.GetItem(ID)
 
 			if TABLE.Flags then
-				for i, v in ipairs(TABLE.Flags) do
+				for _, v in ipairs(TABLE.Flags) do
 					flags = flags .. v .. ","
 				end
 			end
+			checked[ent] = true
 		end
 	end
 
@@ -160,7 +202,7 @@ function PT:FCSEvaluateFlags()
 	elseif self:GetModel():find("male_09") then
 		flags = flags .. "male_09,"
 	end
-	
+
 	flags = flags:Left(-2)
 	self:SetNW2String("FCS_Flags", flags)
 end
@@ -186,19 +228,8 @@ end
 function PT:FCSEquip( ID, DontDrop )
 	local ITEM = FCS.GetItem(ID)
 	if !ITEM then print("Invalid item", ID) return false end
-	local nw2 = "FCS_" .. FCS.TTS[ ITEM.Type ]
-	local prevshirt = self:GetNW2Entity(nw2, NULL)
-	if prevshirt:IsValid() then
-		if !DontDrop then
-			local drop = ents.Create( "fcs_item_" .. prevshirt:GetID() )
-			drop:SetPos( self:EyePos() + self:EyeAngles():Up()*-8 )
-			drop:SetVelocity( self:EyeAngles():Forward() * 100 )
-			drop:Spawn()
-		end
 
-		prevshirt:Remove()
-		self:SetNW2Entity(nw2, NULL)
-	end
+	self:FCSRemoveSlot(ITEM.Type, DontDrop)
 
 	local Fuck = ents.Create("fcs_cloth")
 	Fuck:SetID( ID )
@@ -214,7 +245,11 @@ function PT:FCSEquip( ID, DontDrop )
 	end
 
 	Fuck:Spawn()
-	self:SetNW2Entity(nw2, Fuck)
+
+	local slots = FCS.SlotToList(ITEM.Type)
+	for _, v in pairs(slots) do
+		self:SetNW2Entity("FCS_" .. FCS.SlotToName(v), Fuck)
+	end
 
 	net.Start("FCS_Equip")
 		net.WriteString(ID)
@@ -226,24 +261,30 @@ function PT:FCSEquip( ID, DontDrop )
 end
 
 function PT:FCSSlotOccupied( Slot )
-	local nw2 = "FCS_" .. FCS.TTS[ Slot ]
-	local prevshirt = self:GetNW2Entity(nw2, NULL)
-	return prevshirt:IsValid()
+	local slots = FCS.SlotToList(Slot)
+	for _, v in pairs(slots) do
+		if IsValid(self:GetNW2Entity("FCS_" .. FCS.SlotToName(v))) then
+			return true
+		end
+	end
 end
 
 function PT:FCSRemoveSlot( Slot, DontDrop )
-	local nw2 = "FCS_" .. FCS.TTS[ Slot ]
-	local prevshirt = self:GetNW2Entity(nw2, NULL)
-	if prevshirt:IsValid() then
-		if !DontDrop then
-			local drop = ents.Create( "fcs_item_" .. prevshirt:GetID() )
-			drop:SetPos( self:EyePos() + self:EyeAngles():Up()*-8 )
-			drop:SetVelocity( self:EyeAngles():Forward() * 100 )
-			drop:Spawn()
-		end
 
-		prevshirt:Remove()
-		self:SetNW2Entity(nw2, NULL)
+	local slots = FCS.SlotToList(Slot)
+	for _, v in pairs(slots) do
+		local nw2 = "FCS_" .. FCS.SlotToName(v)
+		local prevshirt = self:GetNW2Entity(nw2)
+		if IsValid(prevshirt) then
+			if !DontDrop then
+				local drop = ents.Create( "fcs_item_" .. prevshirt:GetID() )
+				drop:SetPos( self:EyePos() + self:EyeAngles():Up() * -8 )
+				drop:SetVelocity( self:EyeAngles():Forward() * 100 )
+				drop:Spawn()
+			end
+			prevshirt:Remove()
+			self:SetNW2Entity(nw2, NULL)
+		end
 	end
 
 	self:FCSEvaluateNaked()
@@ -873,7 +914,7 @@ if CLIENT then
 			]])
 			for i, v in ipairs( FCS.TL ) do
 				if v == FCS_SHIRT or v == FCS_PANTS then continue end
-				panel:AddControl("button", { label = "Drop " .. FCS.TTS[v], command = "fcs_drop_" .. FCS.TTS[v] })
+				panel:AddControl("button", { label = "Drop " .. FCS.SlotToName(v), command = "fcs_drop_" .. FCS.SlotToName(v) })
 			end
 		end)
 	end)
