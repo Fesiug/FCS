@@ -15,6 +15,22 @@ function ENT:Initialize()
 		self:SetUseType( SIMPLE_USE )
 		self:SetCollisionGroup( COLLISION_GROUP_WEAPON )
 		self:GetPhysicsObject():Wake()
+		self.SpawnTime = CurTime()
+	end
+end
+
+local timeee
+if SERVER then
+	timeee = CreateConVar("fcs_item_despawntime", 0, FCVAR_ARCHIVE, nil, 0)
+end
+
+function ENT:Think()
+	if SERVER then
+		local time = timeee:GetInt()
+		if time > 0 and (self.SpawnTime+time) <= CurTime() then
+			self:Remove()
+			return
+		end
 	end
 end
 
