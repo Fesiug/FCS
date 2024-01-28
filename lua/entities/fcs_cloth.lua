@@ -40,10 +40,9 @@ if CLIENT then
 	function ENT:Draw()
 		local ply = self:GetFCSOwner()
 		if ply:IsValid() then
+			self:SetupBones()
 			local bm = self:GetItemTable().BoneMods
-			local restoretable
 			if bm then
-				restoretable = {}
 				for k, v in pairs( bm ) do
 					if ply:FCSGetFlags()[k] then
 						for BoneName, BoneTask in pairs( v ) do
@@ -51,7 +50,6 @@ if CLIENT then
 							if !BoneID then continue end
 							local Matri = self:GetBoneMatrix( BoneID )
 							if !Matri then continue end
-							restoretable[BoneID] = Matrix( Matri )
 							if BoneTask.scale then
 								Matri:Scale( BoneTask.scale )
 							end
@@ -90,15 +88,9 @@ if CLIENT then
 				end
 			end
 			if ply:Alive() then
-				self:InvalidateBoneCache()
 				self:DrawModel()
 			else
 				return
-			end
-			if restoretable then
-				for i, v in pairs( restoretable ) do
-					self:SetBoneMatrix( i, v )
-				end
 			end
 		else
 			print( ply, " is INVALID. What the fuck?!" )
