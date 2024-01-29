@@ -957,7 +957,7 @@ if CLIENT then
 			]])
 			for i, v in ipairs( FCS.TL ) do
 				if v == FCS_SHIRT or v == FCS_PANTS then continue end
-				panel:AddControl("button", { label = "Drop " .. FCS.SlotToName(v), command = "fcs_drop_" .. FCS.SlotToName(v) })
+				panel:AddControl("button", { label = "Drop " .. FCS.TTS[v], command = "fcs_drop_" .. string.lower(FCS.TTS[v]) })
 			end
 		end)
 	end)
