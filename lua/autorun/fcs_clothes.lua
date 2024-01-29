@@ -137,11 +137,40 @@ end
 
 if SERVER then
 	util.AddNetworkString("FCS_Equip")
+	util.AddNetworkString("FCS_Option")
+
+	net.Receive("FCS_Option", function(len, ply)
+		local ID = net.ReadString()
+		local item = FCS.Items[ID]
+		if not item then return end
+		local ent = ply:FCSGetSlotEntity(item.Type)
+		if not IsValid(ent) or ent:GetID() ~= ID then return end
+
+		if item.Options.Skins then
+			local sk = net.ReadUInt(6)
+			if item.Options.Skins[sk] then
+				ent:SetSkin(sk)
+			end
+		end
+		if item.Options.Bodygroups then
+			local bg = net.ReadUInt(6)
+			if item.Options.Bodygroups[bg] then
+				-- TODO
+			end
+		end
+		if item.Options.Color then
+			ent:SetColor(net.ReadColor())
+		end
+	end)
 else
 	net.Receive("FCS_Equip", function()
 		local ID = net.ReadString()
 		local ITEM = FCS.GetItem(ID)
 		chat.AddText( color_white, "Enjoy the " .. ITEM.PrintName .. "." )
+	end)
+
+	net.Receive("FCS_Option", function()
+		FCS.CreateClothOptionMenu(net.ReadString())
 	end)
 end
 
@@ -262,6 +291,16 @@ function PT:FCSEquip( ID, DontDrop )
 	self:FCSEvaluateNaked()
 	self:FCSEvaluateFlags()
 	return true
+end
+
+function PT:FCSGetSlotEntity( Slot )
+	local slots = FCS.SlotToList(Slot)
+	for _, v in pairs(slots) do
+		local ent = self:GetNW2Entity("FCS_" .. FCS.SlotToName(v))
+		if IsValid(ent) then
+			return ent
+		end
+	end
 end
 
 function PT:FCSSlotOccupied( Slot )
