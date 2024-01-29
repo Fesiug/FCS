@@ -42,23 +42,26 @@ FCS_GLOVES	= 4
 
 -- Lower Body
 FCS_PANTS	= 8
-FCS_SHOES	= 16
+FCS_BELT	= 16 -- also used for chest rigs
+FCS_SHOES	= 32
 
 -- Head
-FCS_HAT		= 32 -- top of head
-FCS_EYES	= 64
-FCS_MOUTH	= 128
-FCS_EARS	= 256
+FCS_HAT		= 64 -- top of head
+FCS_EYES	= 128
+FCS_MOUTH	= 256
+FCS_EARS	= 512
 
-FCS_LAST_SLOT = 256
+FCS_LAST_SLOT = 512
 
 FCS.TL = {
+	-- Upper Body
 	FCS_SHIRT,
 	FCS_EXO,
 	FCS_GLOVES,
 
 	-- Lower Body
 	FCS_PANTS,
+	FCS_BELT,
 	FCS_SHOES,
 
 	-- Head
@@ -74,6 +77,7 @@ FCS.TTS = {
 	[FCS_GLOVES]	= "Gloves",
 
 	[FCS_PANTS]		= "Pants",
+	[FCS_BELT]		= "Belt",
 	[FCS_SHOES]		= "Shoes",
 
 	[FCS_HAT]		= "Hat",
