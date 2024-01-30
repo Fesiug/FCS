@@ -313,7 +313,6 @@ function PT:FCSSlotOccupied( Slot )
 end
 
 function PT:FCSRemoveSlot( Slot, DontDrop )
-
 	local slots = FCS.SlotToList(Slot)
 	for _, v in pairs(slots) do
 		local nw2 = "FCS_" .. FCS.SlotToName(v)
@@ -353,6 +352,7 @@ end)
 hook.Add( "PlayerSetModel", "FCS_PlayerSetModel", function( ply )
 	timer.Simple( 0.1, function()
 		if ply:GetModel():Left(#"models/fgut") == "models/fgut" then
+			--for i, v in FCS.TL
 			if !ply:FCSSlotOccupied( FCS_SHIRT ) then
 				ply:FCSEquip( "s_citizen1", true )
 			end
