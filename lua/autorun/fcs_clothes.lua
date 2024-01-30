@@ -111,9 +111,20 @@ for i, v in ipairs( FCS.TL ) do
 		ply:FCSRemoveSlot( v )
 	end)
 end
+
+concommand.Add("fcs_give_item", function( ply, cmd, args )
+	if CLIENT then print("[FCS] You can't call this on the CLIENT realm.") debug.Trace() return end
+	if not ply:IsAdmin() then return end
+	local ent = ply:GetEyeTrace().Entity
+	if not IsValid(ent) then return end
+	local swag = args[1]
+	if not FCS.Items[swag] then return end
+	ent:FCSEquip(swag, true)
+end)
+
 end
 
-FCS.Items = {}
+FCS.Items = FCS.Items or {}
 
 function FCS.GetItem( ID )
 	return FCS.Items[ ID ]
@@ -256,6 +267,21 @@ function PT:FCSGetFlags()
 	self.cache_flagst = flagst
 
 	return flagst
+end
+
+function PT:FCSGetArmorAreas(hitgroup)
+	for i, slot in ipairs(FCS.TL) do
+		local nw2 = "FCS_" .. FCS.TTS[slot]
+		local ent = self:GetNW2Entity(nw2, NULL)
+		if IsValid(ent) then
+			local ID = ent:GetID()
+			local TABLE = FCS.GetItem(ID)
+
+			if TABLE.Armor and TABLE.Armor.Region[hitgroup] then
+				return ent, TABLE.Armor.Region[hitgroup]
+			end
+		end
+	end
 end
 
 function PT:FCSEquip( ID, DontDrop )
