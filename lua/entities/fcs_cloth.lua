@@ -92,7 +92,7 @@ if CLIENT then
 
 					if item.Bodygroups then
 						for k, v in pairs(item.Bodygroups) do
-							print(k, v)
+							-- print(k, v)
 							self.FakeClothes:SetBodygroup(k, v)
 						end
 					end

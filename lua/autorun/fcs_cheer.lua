@@ -184,6 +184,7 @@ local chat_to_facial = {
 	[":]"] = "smile",
 	["=)"] = "smile",
 	[":D"] = "big_smile",
+	[":3"] = "big_smile",
 	[">:)"] = "evil_smile",
 	[">:]"] = "evil_smile",
 	[">:D"] = "evil_smile",
@@ -201,6 +202,7 @@ local chat_to_facial = {
 	[":L"] = "wary",
 	[":|"] = "wary",
 	[":l"] = "wary",
+	["D:"] = "wary",
 	[";)"] = "wink",
 }
 
