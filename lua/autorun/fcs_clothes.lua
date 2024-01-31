@@ -762,7 +762,7 @@ if CLIENT then
 			local entry = hands:GetBoneName(i)
 			entry = JohnNintendo[entry]
 			if !entry then
-				--Matri:Scale( M1 )
+				Matri:Scale( M1 )
 			end
 			hands:SetBoneMatrix( i, Matri )
 		end
