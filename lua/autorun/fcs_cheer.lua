@@ -440,7 +440,7 @@ end)
 
 if CLIENT then
 	hook.Add("PopulateToolMenu", "FCS_Cheer_MenuOptions", function()
-		spawnmenu.AddToolMenuOption("Options", "Fesiug's Clothing Solutions", "FCS_Cheer", "Cheer", "", "", function( panel )
+		spawnmenu.AddToolMenuOption("Options", "Fesiug's Character Solutions", "FCS_Cheer", "Cheer", "", "", function( panel )
 			panel:AddControl("header", {
 				description = "Change your characters emotion.",
 			})

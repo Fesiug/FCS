@@ -1005,7 +1005,7 @@ if CLIENT then
 	})
 
 	hook.Add("PopulateToolMenu", "FCS_MenuOptions", function()
-		spawnmenu.AddToolMenuOption("Options", "Fesiug's Clothing Solutions", "FCS_Clothing", "Clothing", "", "", function( panel )
+		spawnmenu.AddToolMenuOption("Options", "Fesiug's Character Solutions", "FCS_Clothing", "Clothing", "", "", function( panel )
 			panel:AddControl("header", {
 				description = "Change what your character looks like.",
 			})

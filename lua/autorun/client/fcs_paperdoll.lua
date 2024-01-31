@@ -106,7 +106,7 @@ hook.Add("HUDPaint", "TEST_HUDPaint", function()
 end)
 
 hook.Add("PopulateToolMenu", "FCS_PaperDoll_MenuOptions", function()
-	spawnmenu.AddToolMenuOption("Options", "Fesiug's Clothing Solutions", "FCS_PaperDoll", "Paper Doll", "", "", function( panel )
+	spawnmenu.AddToolMenuOption("Options", "Fesiug's Character Solutions", "FCS_PaperDoll", "Paper Doll", "", "", function( panel )
 		panel:AddControl("header", {
 			description = "Show a miniature portrait of your character.",
 		})
