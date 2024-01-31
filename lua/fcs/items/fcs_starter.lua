@@ -208,6 +208,20 @@ FCS.DefineItem("s_surplus", {
 	Model = "models/fgut/hl2rp/surplus_jacket_01.mdl",
 })
 
+FCS.DefineItem("s_wintercoat1", {
+	PrintName = "Winter Coat (Green)",
+	Type = FCS_SHIRT,
+	BoneMods = GENERICFIX,
+	Model = "models/fgut/hl2rp/wintercoat_shirt_01.mdl",
+})
+
+FCS.DefineItem("s_wintercoat2", {
+	PrintName = "Winter Coat (Brown)",
+	Type = FCS_SHIRT,
+	BoneMods = GENERICFIX,
+	Model = "models/fgut/hl2rp/wintercoat_shirt2_01.mdl",
+})
+
 
 
 
