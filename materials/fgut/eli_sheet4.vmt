@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitTexture
+	"$basetexture" "fgut/eli_sheet4"
+    "$bumpmap" "fgut/eli_sheet_normal"
+	"$halflambert" 1
+
+	"$phong" "1"
+	"$phongexponent" "4"
+	"$phongboost" "0.3"
+	"$phongfresnelranges" "[0.1 0.2 0.5]"
+}

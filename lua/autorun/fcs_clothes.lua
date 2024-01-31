@@ -694,6 +694,47 @@ do
 		Model = "models/fgut/pants_medic_01.mdl",
 	})
 
+	local ELIPANTS = {
+		[true] = {
+			["ValveBiped.Bip01_Pelvis"] = {
+				translate = Vector( 0, -2, 0 ),
+			},
+			["ValveBiped.Bip01_L_Thigh"] = {
+				translate = Vector( 2/2, 0, 0 ),
+			},
+			["ValveBiped.Bip01_R_Thigh"] = {
+				translate = Vector( 2/2, 0, 0 ),
+			},
+		},
+	},
+	FCS.DefineItem("p_eli", {
+		PrintName = "Cargo Pants",
+		Type = FCS_PANTS,
+		BoneMods = ELIPANTS,
+		Model = "models/fgut/pants_eli_10.mdl",
+	})
+	FCS.DefineItem("p_eli2", {
+		PrintName = "Cargo Pants (Green)",
+		Type = FCS_PANTS,
+		BoneMods = ELIPANTS,
+		Model = "models/fgut/pants_eli_10.mdl",
+		Skin = 1,
+	})
+	FCS.DefineItem("p_eli3", {
+		PrintName = "Cargo Pants (Gray)",
+		Type = FCS_PANTS,
+		BoneMods = ELIPANTS,
+		Model = "models/fgut/pants_eli_10.mdl",
+		Skin = 2,
+	})
+	FCS.DefineItem("p_eli4", {
+		PrintName = "Cargo Pants (Blue)",
+		Type = FCS_PANTS,
+		BoneMods = ELIPANTS,
+		Model = "models/fgut/pants_eli_10.mdl",
+		Skin = 3,
+	})
+
 	FCS.DefineItem("p_blacksuit", {
 		PrintName = "Suit Pants (Black)",
 		Type = FCS_PANTS,
