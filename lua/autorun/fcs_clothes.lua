@@ -124,7 +124,7 @@ end)
 
 end
 
-FCS.Items = FCS.Items or {}
+FCS.Items = {}
 
 function FCS.GetItem( ID )
 	return FCS.Items[ ID ]
@@ -388,6 +388,7 @@ hook.Add( "PlayerSetModel", "FCS_PlayerSetModel", function( ply )
 			end
 			ply:FCSEvaluateNaked()
 			ply:FCSEvaluateFlags()
+			ply:SetNW2Int( "FCS_EyeColor", GetConVar("fcs_eyecolor"):GetInt() )
 		else
 			for i, v in ipairs( FCS.TL ) do
 				ply:FCSRemoveSlot( v )
@@ -823,7 +824,7 @@ if CLIENT then
 		"Engine/eye-iris-green-light",
 	}
 	function PT:FCSEyeColor()
-		return EYEIRIS[ math.Clamp( self:GetInfoNum( "fcs_eyecolor", 1 ), 1, #EYEIRIS ) ]
+		return EYEIRIS[ math.Clamp( self:GetNW2Int( "FCS_EyeColor", 1 ), 1, #EYEIRIS ) ]
 	end
 	CreateClientConVar("fcs_eyecolor", 1, true, true)
 	matproxy.Add({
@@ -1006,23 +1007,22 @@ if CLIENT then
 	hook.Add("PopulateToolMenu", "FCS_MenuOptions", function()
 		spawnmenu.AddToolMenuOption("Options", "Fesiug's Clothing Solutions", "FCS_Clothing", "Clothing", "", "", function( panel )
 			panel:AddControl("header", {
-				description = "Show a miniature portrait of your character.",
+				description = "Change what your character looks like.",
 			})
-			panel:AddControl("slider", {
-				label = "Eye Color",
-				command = "fcs_eyecolor",
-				type = "int",
-				min = 1,
-				max = #EYEIRIS,
-			})
-			panel:ControlHelp([[
-				1. Dark Brown
-				2. Light Brown
-				3. Black
-				4. Blue
-				5. Green
-				6. Light Green
-			]])
+			local cbox = vgui.Create( "DComboBox", panel )
+			cbox:Dock( TOP )
+			cbox:DockMargin( 10, 10, 10, 0 )
+			cbox:SetValue( "Eye Color" )
+			cbox:SetSortItems( false )
+			cbox:AddChoice( "Dark Brown",	1 )
+			cbox:AddChoice( "Light Brown",	2 )
+			cbox:AddChoice( "Black",		3 )
+			cbox:AddChoice( "Blue",			4 )
+			cbox:AddChoice( "Green",		5 )
+			cbox:AddChoice( "Light Green",	6 )
+			function cbox:OnSelect( index, value )
+				RunConsoleCommand( "fcs_eyecolor", index )
+			end
 			for i, v in ipairs( FCS.TL ) do
 				if v == FCS_SHIRT or v == FCS_PANTS then continue end
 				panel:AddControl("button", { label = "Drop " .. FCS.TTS[v], command = "fcs_drop_" .. string.lower(FCS.TTS[v]) })
