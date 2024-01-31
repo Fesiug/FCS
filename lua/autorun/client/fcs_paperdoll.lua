@@ -3,7 +3,7 @@ hook.Add("ShouldDrawLocalPlayer", "TEST_ShouldDrawLocalPlayer", function()
 	return troll
 end)
 
-local scaleme = 0.5
+local scaleme = 0
 
 local enable = CreateClientConVar("fcspaperdoll", 0, true, false)
 local clight = CreateClientConVar("fcspaperdoll_clight", 1, true, false)
@@ -82,8 +82,8 @@ hook.Add("HUDPaint", "TEST_HUDPaint", function()
 					v.pos:Add( nu )
 					v.dir = -p:GetForward()
 				end
-				render.SetLocalModelLights(CustomLights)
 			end
+			render.SetLocalModelLights(CustomLights)
 			p:DrawModel()
 
 			for i, v in ipairs( FCS.TL ) do
