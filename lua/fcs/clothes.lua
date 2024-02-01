@@ -307,6 +307,7 @@ end
 
 function PT:FCSEquip( ID, DontDrop )
 	local ITEM = FCS.GetItem(ID)
+	if !ID or ID == "" then print("You fed FCSEquip an empty ID") debug.Trace() end
 	if !ITEM then print("Invalid item", ID) return false end
 
 	self:FCSRemoveSlot(ITEM.Type, DontDrop)
@@ -878,14 +879,18 @@ if CLIENT then
 					local MD = CLList[slot].mdl
 					MD:SetNoDraw( true )
 					MD:AddEffects( EF_BONEMERGE )
+					MD:AddEffects( EF_BONEMERGE_FASTCULL )
 					MD:SetParent( hands )
 				else
+					local Throwback = EyeAngles():Forward()
+					Throwback:Mul( -9999 )
+					Throwback:Add( EyePos() )
+
 					local MD = CLList[slot].mdl
 					if !MD:GetParent():IsValid() then
 						MD:SetParent( hands )
 					end
 					MD:SetupBones()
-					local FW = EyeAngles():Forward()
 					for i=0, MD:GetBoneCount()-1 do
 						local Matri = MD:GetBoneMatrix( i )
 						if !Matri then continue end
@@ -893,10 +898,10 @@ if CLIENT then
 						--print(entry)
 						entry = ApproveList[entry]
 						if !entry then
-							Matri:SetTranslation( MD:GetPos() + MD:GetUp() * -9999 + MD:GetForward() * -9999 )
+							Matri:SetTranslation( Throwback )
 							Matri:Scale( vector_origin )
 						else
-							Matri:SetScale( Vector(1, 1, 1) )
+							Matri:SetScale( M2 )
 							if istable(entry) then
 								if entry.translate then
 									Matri:Translate( entry.translate )
