@@ -222,6 +222,20 @@ FCS.DefineItem("s_wintercoat2", {
 	Model = "models/fgut/hl2rp/wintercoat_shirt2_01.mdl",
 })
 
+FCS.DefineItem("s_beta1", {
+	PrintName = "Ragged Shirt (Pale)",
+	Type = FCS_SHIRT,
+	BoneMods = GENERICFIX,
+	Model = "models/fgut/hl2rp/beta_shirt_01.mdl",
+})
+
+FCS.DefineItem("s_beta2", {
+	PrintName = "Ragged Shirt (Green)",
+	Type = FCS_SHIRT,
+	BoneMods = GENERICFIX,
+	Model = "models/fgut/hl2rp/beta_shirt2_01.mdl",
+})
+
 
 
 
@@ -334,6 +348,18 @@ FCS.DefineItem("p_eli4", {
 	BoneMods = ELIPANTS,
 	Model = "models/fgut/pants_eli_10.mdl",
 	Skin = 3,
+})
+
+FCS.DefineItem("p_beta1", {
+	PrintName = "Thick Jeans (Brown)",
+	Type = FCS_PANTS,
+	Model = "models/fgut/hl2rp/beta_legs_01.mdl",
+})
+
+FCS.DefineItem("p_beta2", {
+	PrintName = "Thick Jeans (Gray)",
+	Type = FCS_PANTS,
+	Model = "models/fgut/hl2rp/beta_legs2_01.mdl",
 })
 
 FCS.DefineItem("p_blacksuit", {
