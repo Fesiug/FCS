@@ -86,6 +86,24 @@ FCS.TTS = {
 	[FCS_EARS]		= "Ears",
 }
 
+
+for i, v in ipairs(FCS.TL) do
+	local def = ""
+	if v == FCS_SHIRT then
+		def = "s_citizen2"
+	elseif v == FCS_PANTS then
+		def = "p_medic"
+	end
+	
+	CreateConVar( "fcs_def_" .. FCS.TTS[v]:lower(), def, FCVAR_ARCHIVE+FCVAR_REPLICATED )
+	
+	local def2 = 1
+	if v == FCS_SHIRT or v == FCS_PANTS or v == FCS_SHOES then
+		def2 = 0
+	end
+	CreateConVar( "fcs_allowdrop_" .. FCS.TTS[v]:lower(), def2, FCVAR_ARCHIVE+FCVAR_REPLICATED )
+end
+
 function FCS.SlotToList(b)
 	local slots = {}
 	local i = 1
@@ -107,8 +125,9 @@ if SERVER then
 for i, v in ipairs( FCS.TL ) do
 	concommand.Add("fcs_drop_" .. FCS.TTS[v]:lower(), function( ply, cmd )
 		if CLIENT then print("[FCS] You can't call this on the CLIENT realm.") debug.Trace() return end
-		if v == FCS_SHIRT or v == FCS_PANTS then return end
-		ply:FCSRemoveSlot( v )
+		if GetConVar("fcs_allowdrop_" .. FCS.TTS[v]:lower()):GetBool() then
+			ply:FCSRemoveSlot( v )
+		end
 	end)
 end
 
@@ -379,12 +398,11 @@ end)
 hook.Add( "PlayerSetModel", "FCS_PlayerSetModel", function( ply )
 	timer.Simple( 0.1, function()
 		if ply:GetModel():Left(#"models/fgut") == "models/fgut" then
-			--for i, v in FCS.TL
-			if !ply:FCSSlotOccupied( FCS_SHIRT ) then
-				ply:FCSEquip( "s_citizen1", true )
-			end
-			if !ply:FCSSlotOccupied( FCS_PANTS ) then
-				ply:FCSEquip( "p_citizen1", true )
+			for i, v in ipairs(FCS.TL) do
+				local IName = GetConVar( "fcs_def_" .. FCS.TTS[v]:lower() ):GetString()
+				if !ply:FCSSlotOccupied( v ) then
+					ply:FCSEquip( IName, true )
+				end
 			end
 			ply:FCSEvaluateNaked()
 			ply:FCSEvaluateFlags()
@@ -622,8 +640,20 @@ if CLIENT then
 				RunConsoleCommand( "fcs_eyecolor", index )
 			end
 			for i, v in ipairs( FCS.TL ) do
-				if v == FCS_SHIRT or v == FCS_PANTS then continue end
-				panel:AddControl("button", { label = "Drop " .. FCS.TTS[v], command = "fcs_drop_" .. string.lower(FCS.TTS[v]) })
+				if GetConVar("fcs_allowdrop_" .. FCS.TTS[v]:lower()):GetBool() then
+					panel:AddControl("button", { label = "Drop " .. FCS.TTS[v], command = "fcs_drop_" .. string.lower(FCS.TTS[v]) })
+				end
+			end
+		end)
+		spawnmenu.AddToolMenuOption("Options", "Fesiug's Character Solutions", "FCS_ClothingAdmin", "Clothing Admin", "", "", function( panel )
+			panel:AddControl("header", {
+				description = "Configure things.",
+			})
+			for i, v in ipairs( FCS.TL ) do
+				panel:AddControl("checkbox", {
+					label = "Allow Dropping " .. FCS.TTS[v],
+					command = "fcs_allowdrop_" .. string.lower(FCS.TTS[v])
+				})
 			end
 		end)
 	end)
