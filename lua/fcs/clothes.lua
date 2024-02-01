@@ -33,8 +33,6 @@ player_manager.AddValidHands( "STRP Female 04",					"models/fgut/chands_02.mdl",
 player_manager.AddValidHands( "STRP Female 06",					"models/fgut/chands_02.mdl", 0, "00000000" )
 player_manager.AddValidHands( "STRP Female 07",					"models/fgut/chands_02.mdl", 0, "00000000" )
 
-FCS = {}
-
 -- Upper Body
 FCS_SHIRT	= 1
 FCS_EXO		= 2 -- body armor etc.
@@ -400,7 +398,7 @@ hook.Add( "PlayerSetModel", "FCS_PlayerSetModel", function( ply )
 		if ply:GetModel():Left(#"models/fgut") == "models/fgut" then
 			for i, v in ipairs(FCS.TL) do
 				local IName = GetConVar( "fcs_def_" .. FCS.TTS[v]:lower() ):GetString()
-				if !ply:FCSSlotOccupied( v ) then
+				if IName != "" and !ply:FCSSlotOccupied( v ) then
 					ply:FCSEquip( IName, true )
 				end
 			end
@@ -857,10 +855,4 @@ if CLIENT then
 			end
 		end
 	end)
-end
-
-local files, dirs = file.Find("fcs/items/*.lua", "LUA")
-for i, filename in ipairs(files) do
-	AddCSLuaFile("fcs/items/" .. filename)
-	include		("fcs/items/" .. filename)
 end

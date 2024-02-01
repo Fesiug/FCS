@@ -77,21 +77,21 @@ FCS.DefineItem("s_citizen2", {
 })
 
 FCS.DefineItem("s_cmb1", {
-	PrintName = "CWU - Orange Division",
+	PrintName = "CWU (Orange)",
 	Type = FCS_SHIRT,
 	BoneMods = GENERICFIX,
 	Model = "models/fgut/shirt_cmb01_02.mdl",
 })
 
 FCS.DefineItem("s_cmb2", {
-	PrintName = "CWU - Yellow Division",
+	PrintName = "CWU (Yellow)",
 	Type = FCS_SHIRT,
 	BoneMods = GENERICFIX,
 	Model = "models/fgut/shirt_cmb02_01.mdl",
 })
 
 FCS.DefineItem("s_cmb3", {
-	PrintName = "CWU - Blue Division",
+	PrintName = "CWU (Blue)",
 	Type = FCS_SHIRT,
 	BoneMods = GENERICFIX,
 	Model = "models/fgut/shirt_cmb03_01.mdl",
@@ -118,14 +118,14 @@ FCS.DefineItem("s_rebel2", {
 })
 
 FCS.DefineItem("s_refugee1", {
-	PrintName = "Pale Tan Shirt",
+	PrintName = "Buttoned Shirt (Tan)",
 	Type = FCS_SHIRT,
 	BoneMods = GENERICFIX,
 	Model = "models/fgut/shirt_refugee01_01.mdl",
 })
 
 FCS.DefineItem("s_refugee2", {
-	PrintName = "Olive Green Shirt",
+	PrintName = "Buttoned Shirt (Olive)",
 	Type = FCS_SHIRT,
 	BoneMods = GENERICFIX,
 	Model = "models/fgut/shirt_refugee02_01.mdl",
