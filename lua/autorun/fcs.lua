@@ -34,6 +34,12 @@ if CLIENT then
 	INCL("fcs/cl_paperdoll.lua")
 end
 
+-- It's big and it's ugly!
+--A_CL	("fcs/cl_iconmaker.lua")
+--if CLIENT then
+--	INCL	("fcs/cl_iconmaker.lua")
+--end
+
 A_CL	("fcs/cheer.lua")
 INCL	("fcs/cheer.lua")
 
