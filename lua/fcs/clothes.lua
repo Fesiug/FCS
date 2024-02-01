@@ -37,25 +37,27 @@ player_manager.AddValidHands( "STRP Female 07",					"models/fgut/chands_02.mdl",
 FCS_SHIRT	= 1
 FCS_EXO		= 2 -- body armor etc.
 FCS_GLOVES	= 4
+FCS_BACK	= 8
 
 -- Lower Body
-FCS_PANTS	= 8
-FCS_BELT	= 16 -- also used for chest rigs
-FCS_SHOES	= 32
+FCS_PANTS	= 16
+FCS_BELT	= 32 -- also used for chest rigs
+FCS_SHOES	= 64
 
 -- Head
-FCS_HAT		= 64 -- top of head
-FCS_EYES	= 128
-FCS_MOUTH	= 256
-FCS_EARS	= 512
+FCS_HAT		= 128 -- top of head
+FCS_EYES	= 256
+FCS_MOUTH	= 512
+FCS_EARS	= 1024
 
-FCS_LAST_SLOT = 512
+FCS_LAST_SLOT = 1024
 
 FCS.TL = {
 	-- Upper Body
 	FCS_SHIRT,
 	FCS_EXO,
 	FCS_GLOVES,
+	FCS_BACK,
 
 	-- Lower Body
 	FCS_PANTS,
@@ -73,6 +75,7 @@ FCS.TTS = {
 	[FCS_SHIRT]		= "Shirt",
 	[FCS_EXO]		= "Exo",
 	[FCS_GLOVES]	= "Gloves",
+	[FCS_BACK]		= "Back",
 
 	[FCS_PANTS]		= "Pants",
 	[FCS_BELT]		= "Belt",
@@ -141,7 +144,7 @@ end)
 
 end
 
-FCS.Items = {}
+FCS.Items = FCS.Items or {}
 
 function FCS.GetItem( ID )
 	return FCS.Items[ ID ]
@@ -358,15 +361,17 @@ end
 
 function PT:FCSRemoveSlot( Slot, DontDrop )
 	local slots = FCS.SlotToList(Slot)
+	local dropped = false
 	for _, v in pairs(slots) do
 		local nw2 = "FCS_" .. FCS.SlotToName(v)
 		local prevshirt = self:GetNW2Entity(nw2)
 		if IsValid(prevshirt) then
-			if !DontDrop then
+			if !DontDrop and !dropped then
 				local drop = ents.Create( "fcs_item_" .. prevshirt:GetID() )
 				drop:SetPos( self:EyePos() + self:EyeAngles():Up() * -8 )
 				drop:SetVelocity( self:EyeAngles():Forward() * 100 )
 				drop:Spawn()
+				dropped = true
 			end
 			prevshirt:Remove()
 			self:SetNW2Entity(nw2, NULL)
