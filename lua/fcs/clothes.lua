@@ -643,8 +643,65 @@ if CLIENT then
 				RunConsoleCommand( "fcs_eyecolor", index )
 			end
 			for i, v in ipairs( FCS.TL ) do
-				if GetConVar("fcs_allowdrop_" .. FCS.TTS[v]:lower()):GetBool() then
-					panel:AddControl("button", { label = "Drop " .. FCS.TTS[v], command = "fcs_drop_" .. string.lower(FCS.TTS[v]) })
+				local div = vgui.Create( "DHorizontalDivider", panel )
+				div:Dock(TOP)
+				div:DockMargin( 10, 5, 10, 5 )
+				div.Slot = v
+				div.ADrop = GetConVar("fcs_allowdrop_" .. FCS.TTS[v]:lower()):GetBool()
+
+				do
+					local pany = vgui.Create("DButton")
+					function pany:DoClick() RunConsoleCommand( "fcs_drop_" .. string.lower(FCS.TTS[v]) ) end
+					pany:SetText( "Drop " .. FCS.TTS[v] )
+					div:SetLeft( pany )
+					div.MLeft = pany
+				end
+				do
+					local pany = vgui.Create("DButton")
+					function pany:DoClick()
+						local EE = LocalPlayer():GetNW2Entity("FCS_" .. FCS.TTS[v], NULL)
+						if EE:IsValid() then
+							FCS.CreateClothOptionMenu( EE:GetID() )
+						end
+					end
+					pany:SetText( "+" )
+					div:SetRight( pany )
+					div.MRight = pany
+				end
+				div:SetDividerWidth( 4 )
+				div:SetLeftMin( 20 )
+				div:SetRightMin( 20 )
+				
+				function div:Think()
+					if (div.EorD or 0) <= CurTime() then
+						div.EorD = CurTime() + 1
+
+						local EE = LocalPlayer():GetNW2Entity("FCS_" .. FCS.TTS[v], NULL)
+						local EE_V = EE:IsValid()
+						local EE_D
+						if EE_V then
+							EE_D = EE:GetItemTable()
+						end
+						local ml = div.MLeft
+						ml:SetEnabled( div.ADrop and EE_V )
+						if ml and EE_V then
+							ml:SetText( FCS.TTS[v] .. ": " .. EE_D.PrintName )
+						else
+							ml:SetText( FCS.TTS[v] )
+						end
+						local ml = div.MRight
+						if ml and EE_V then
+							ml:SetEnabled( (EE_D.Options and true) or false )
+						else
+							ml:SetEnabled( false )
+						end
+					end
+				end
+
+				local oldlay = panel.PerformLayout
+				function panel:PerformLayout( w, h )
+					div:SetLeftWidth( w-50 )
+					oldlay( self, w, h )
 				end
 			end
 		end)
@@ -653,9 +710,13 @@ if CLIENT then
 				description = "Configure things.",
 			})
 			for i, v in ipairs( FCS.TL ) do
-				panel:AddControl("checkbox", {
+				local pany = panel:AddControl("checkbox", {
 					label = "Allow Dropping " .. FCS.TTS[v],
 					command = "fcs_allowdrop_" .. string.lower(FCS.TTS[v])
+				})
+				local pany = panel:AddControl("textbox", {
+					label = "Default " .. FCS.TTS[v],
+					command = "fcs_def_" .. string.lower(FCS.TTS[v]):lower()
 				})
 			end
 		end)
