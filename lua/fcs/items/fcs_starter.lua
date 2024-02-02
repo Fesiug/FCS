@@ -187,6 +187,22 @@ FCS.DefineItem("s_admin", {
 	Model = "models/fgut/hl2rp/admin_shirt_01.mdl",
 })
 
+FCS.DefineItem("s_admin2", {
+	PrintName = "Suit Top (Purple)",
+	Type = FCS_SHIRT,
+	BoneMods = GENERICFIX,
+	Model = "models/fgut/hl2rp/admin_shirt_01.mdl",
+	Skin = 1,
+})
+
+FCS.DefineItem("s_admin3", {
+	PrintName = "Suit Top (Blue)",
+	Type = FCS_SHIRT,
+	BoneMods = GENERICFIX,
+	Model = "models/fgut/hl2rp/admin_shirt_01.mdl",
+	Skin = 2,
+})
+
 FCS.DefineItem("s_security", {
 	PrintName = "Security Jacket",
 	Type = FCS_SHIRT,
@@ -234,6 +250,20 @@ FCS.DefineItem("s_beta2", {
 	Type = FCS_SHIRT,
 	BoneMods = GENERICFIX,
 	Model = "models/fgut/hl2rp/beta_shirt2_01.mdl",
+})
+
+FCS.DefineItem("s_trenchcoat_brown", {
+	PrintName = "Trenchcoat (Brown)",
+	Type = FCS_SHIRT,
+	BoneMods = GENERICFIX,
+	Model = "models/fgut/hl2rp/trenchcoat_brown_01.mdl",
+})
+
+FCS.DefineItem("s_trenchcoat_black", {
+	PrintName = "Trenchcoat (Black)",
+	Type = FCS_SHIRT,
+	BoneMods = GENERICFIX,
+	Model = "models/fgut/hl2rp/trenchcoat_black_01.mdl",
 })
 
 

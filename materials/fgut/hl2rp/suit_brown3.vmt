@@ -1,0 +1,28 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "fgut/hl2rp/suit_brown3"
+	"$bumpmap" "fgut/hl2rp/suit_brown_n"
+        
+	$envmap	"env_cubemap"
+	$envmaptint	"[.1 .1 .1]"
+	$normalmapalphaenvmapmask	1
+
+	$phong	1
+	$phongboost	"0.5"
+	$phongexponent	"8"
+	$phongtint	"[1 1 1]"
+	$phongfresnelranges	"[.5 3 48]"
+
+	$rimlight	1
+	$rimlightexponent	"256"
+	$rimlightboost	"0.15"
+
+	$ambientocclusion	1
+	$halflambert	0
+	$nocull	1
+
+	$detail "fgut/hl2rp/noise_detail"
+	$detailscale 16
+	$detailblendfactor	0.5
+	$detailblendmode	0
+}
