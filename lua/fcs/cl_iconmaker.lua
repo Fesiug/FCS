@@ -1,7 +1,7 @@
 
 -- TODO: Significantly better UI to pose and save icons.
 
-if false then
+if false and CLIENT then
 	local function ICO_Initialize()
 		if IsValid( mdl ) then mdl:Remove() end
 		if IsValid( mdl2 ) then mdl2:Remove() end
@@ -95,6 +95,23 @@ if false then
 	local ANG_EYES		= Angle( 15, 180, 0 )
 	local CL_EYES		= CL_HEAD
 
+	local POS_BACK		= Vector( -120, 53, 83 )
+	local ANG_BACK		= Angle( 15, -25, 0 )
+	local CL_BACK		= {
+		{
+			type = MATERIAL_LIGHT_SPOT,
+			color = Vector( 1, 1, 1 )*2,
+			pos = Vector( 64, -48, 94 ),
+			dir = Angle( 40, 180-40, 0 ):Forward(),
+		},
+		{
+			type = MATERIAL_LIGHT_SPOT,
+			color = Vector( -1, -1, -1 )*2,
+			pos = Vector( -32, 48, -16 ),
+			dir = Angle( -140, 180+40, 0 ):Forward(),
+		},
+	}
+
 	render.PushRenderTarget(NewRT)
 		render.OverrideDepthEnable( true, true )
 		render.SetWriteDepthToDestAlpha( false )
@@ -109,15 +126,19 @@ if false then
 			local POS, ANG, CL = POS_SHIRT, ANG_SHIRT, CL_SHIRT
 			
 			if HasT(FCS_EYES, v.Type) or HasT(FCS_MOUTH, v.Type) then
+				do continue end
 				POS, ANG, CL = POS_EYES, ANG_EYES, CL_EYES
 			elseif HasT(FCS_HAT, v.Type) then
+				do continue end
 				POS, ANG, CL = POS_HEAD, ANG_HEAD, CL_HEAD
-				-- continue ----------------------------
+			elseif HasT(FCS_BACK, v.Type) then
+				--do continue end
+				POS, ANG, CL = POS_BACK, ANG_BACK, CL_BACK
 			elseif HasT(FCS_PANTS, v.Type) then
+				do continue end
 				POS, ANG, CL = POS_PANTS, ANG_PANTS, CL_PANTS
-				-- continue ----------------------------
 			else
-				-- continue ----------------------------
+				do continue end
 			end
 
 			render.SetLocalModelLights(CL)

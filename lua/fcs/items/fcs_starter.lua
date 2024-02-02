@@ -237,6 +237,18 @@ FCS.DefineItem("s_beta2", {
 })
 
 
+-- Back
+FCS.DefineItem("b_bag", {
+	PrintName = "Bag",
+	Type = FCS_BACK,
+	Model = "models/fgut/hl2rp/bag_01.mdl",
+})
+
+FCS.DefineItem("b_satchel", {
+	PrintName = "Satchel",
+	Type = FCS_BACK,
+	Model = "models/fgut/hl2rp/satchel_01.mdl",
+})
 
 -- Exo
 FCS.DefineItem("e_elivest1", {
