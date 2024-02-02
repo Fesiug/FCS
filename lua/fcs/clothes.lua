@@ -851,6 +851,7 @@ if CLIENT then
 	local M1, M2 = Vector( Mew, Mew, Mew ), Vector( 1, 1, 1 )
 	CLList = CLList or {}
 	hook.Add("PreDrawPlayerHands", "FCS_PreDrawPlayerHands", function( hands, vm, ply, wep )
+		hands:SetupBones()
 		for i=0, hands:GetBoneCount()-1 do
 			local Matri = hands:GetBoneMatrix( i )
 			if !Matri then continue end
@@ -861,6 +862,7 @@ if CLIENT then
 			end
 			hands:SetBoneMatrix( i, Matri )
 		end
+		hands:InvalidateBoneCache()
 	end)
 	hook.Add("PostDrawPlayerHands", "FCS_PostDrawPlayerHands", function( hands, vm, ply, wep )
 		--for i, slot in ipairs( FCS.TL ) do
