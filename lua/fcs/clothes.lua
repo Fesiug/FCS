@@ -410,7 +410,7 @@ hook.Add( "PlayerSetModel", "FCS_PlayerSetModel", function( ply )
 			end
 			ply:FCSEvaluateNaked()
 			ply:FCSEvaluateFlags()
-			ply:SetNW2Int( "FCS_EyeColor", GetConVar("fcs_eyecolor"):GetInt() )
+			ply:SetNW2Int( "FCS_EyeColor", ply:GetInfoNum("fcs_eyecolor", 1) )
 		else
 			for i, v in ipairs( FCS.TL ) do
 				ply:FCSRemoveSlot( v )
