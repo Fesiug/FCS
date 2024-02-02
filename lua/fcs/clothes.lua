@@ -916,7 +916,9 @@ if CLIENT then
 						end
 						MD:SetBoneMatrix( i, Matri )
 					end
+					if wep.ViewModelFlip then render.CullMode( MATERIAL_CULLMODE_CW ) end
 					MD:DrawModel()
+					render.CullMode( MATERIAL_CULLMODE_CCW )
 				end
 			else
 				if CLList[slot] then
