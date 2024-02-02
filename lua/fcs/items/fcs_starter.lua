@@ -238,6 +238,32 @@ FCS.DefineItem("s_beta2", {
 
 
 
+-- Exo
+FCS.DefineItem("e_elivest1", {
+	PrintName = "Vest (Black)",
+	Type = FCS_EXO,
+	Model = "models/fgut/hl2rp/vest_01.mdl",
+	Skin = 0,
+})
+FCS.DefineItem("e_elivest2", {
+	PrintName = "Vest (Green)",
+	Type = FCS_EXO,
+	Model = "models/fgut/hl2rp/vest_01.mdl",
+	Skin = 1,
+})
+FCS.DefineItem("e_elivest3", {
+	PrintName = "Vest (Blue)",
+	Type = FCS_EXO,
+	Model = "models/fgut/hl2rp/vest_01.mdl",
+	Skin = 2,
+})
+FCS.DefineItem("e_elivest4", {
+	PrintName = "Vest (Red)",
+	Type = FCS_EXO,
+	Model = "models/fgut/hl2rp/vest_01.mdl",
+	Skin = 3,
+})
+
 
 -- Pants
 FCS.DefineItem("p_citizen1", {
