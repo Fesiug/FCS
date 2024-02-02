@@ -851,18 +851,23 @@ if CLIENT then
 	local M1, M2 = Vector( Mew, Mew, Mew ), Vector( 1, 1, 1 )
 	CLList = CLList or {}
 	hook.Add("PreDrawPlayerHands", "FCS_PreDrawPlayerHands", function( hands, vm, ply, wep )
-		hands:SetupBones()
-		for i=0, hands:GetBoneCount()-1 do
-			local Matri = hands:GetBoneMatrix( i )
-			if !Matri then continue end
-			local entry = hands:GetBoneName(i)
-			entry = JohnNintendo[entry]
-			if !entry then
-				Matri:Scale( M1 )
+		local slot = FCS_SHIRT
+		local nw2 = "FCS_" .. FCS.TTS[slot]
+		local ent = ply:GetNW2Entity(nw2, NULL)
+
+		if ent:IsValid() then
+			hands:SetupBones()
+			for i=0, hands:GetBoneCount()-1 do
+				local Matri = hands:GetBoneMatrix( i )
+				if !Matri then continue end
+				local entry = hands:GetBoneName(i)
+				entry = JohnNintendo[entry]
+				if !entry then
+					Matri:Scale( M1 )
+				end
+				hands:SetBoneMatrix( i, Matri )
 			end
-			hands:SetBoneMatrix( i, Matri )
 		end
-		hands:InvalidateBoneCache()
 	end)
 	hook.Add("PostDrawPlayerHands", "FCS_PostDrawPlayerHands", function( hands, vm, ply, wep )
 		--for i, slot in ipairs( FCS.TL ) do
