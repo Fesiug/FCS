@@ -898,6 +898,7 @@ if CLIENT then
 						MD:SetParent( hands )
 					end
 					MD:SetupBones()
+					MD:SetSkin( ent:GetSkin() )
 					for i=0, MD:GetBoneCount()-1 do
 						local Matri = MD:GetBoneMatrix( i )
 						if !Matri then continue end
