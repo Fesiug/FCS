@@ -305,7 +305,7 @@ function PT:FCSGetArmorAreas(hitgroup)
 	end
 end
 
-function PT:FCSEquip( ID, DontDrop )
+function PT:FCSEquip( ID, DontDrop, DontEvaluate )
 	local ITEM = FCS.GetItem(ID)
 	if !ID or ID == "" then print("You fed FCSEquip an empty ID") debug.Trace() end
 	if !ITEM then print("Invalid item", ID) return false end
@@ -336,8 +336,10 @@ function PT:FCSEquip( ID, DontDrop )
 		net.WriteString(ID)
 	net.Send(self)
 
-	self:FCSEvaluateNaked()
-	self:FCSEvaluateFlags()
+	if DontEvaluate != true then
+		self:FCSEvaluateNaked()
+		self:FCSEvaluateFlags()
+	end
 	return true
 end
 
@@ -399,22 +401,35 @@ hook.Add( "PlayerSpawn", "FCS_PlayerSpawn", function( ply )
 		end)
 	end
 end)
+
+function PT:FCSEvaluateEyes()
+	self:SetNW2Int( "FCS_EyeColor", self:GetInfoNum("fcs_eyecolor", 1) )
+end
+
+function PT:FCSEquipDefaults( NoDrop, Force )
+	for i, v in ipairs(FCS.TL) do
+		local IName = GetConVar( "fcs_def_" .. FCS.TTS[v]:lower() ):GetString()
+		if IName != "" and (Force or !self:FCSSlotOccupied( v )) then
+			self:FCSEquip( IName, NoDrop, true )
+		end
+	end
+	self:FCSEvaluateNaked()
+	self:FCSEvaluateFlags()
+	self:FCSEvaluateEyes()
+end
+
+function PT:FCSUnequipAll( NoDrop )
+	for i, v in ipairs( FCS.TL ) do
+		self:FCSRemoveSlot( v, NoDrop )
+	end
+end
+
 hook.Add( "PlayerSetModel", "FCS_PlayerSetModel", function( ply )
 	timer.Simple( 0.1, function()
 		if ply:GetModel():Left(#"models/fgut") == "models/fgut" then
-			for i, v in ipairs(FCS.TL) do
-				local IName = GetConVar( "fcs_def_" .. FCS.TTS[v]:lower() ):GetString()
-				if IName != "" and !ply:FCSSlotOccupied( v ) then
-					ply:FCSEquip( IName, true )
-				end
-			end
-			ply:FCSEvaluateNaked()
-			ply:FCSEvaluateFlags()
-			ply:SetNW2Int( "FCS_EyeColor", ply:GetInfoNum("fcs_eyecolor", 1) )
+			self:FCSEquipDefaults( false, false )
 		else
-			for i, v in ipairs( FCS.TL ) do
-				ply:FCSRemoveSlot( v )
-			end
+			self:FCSUnequipAll()
 		end
 	end)
 end )
