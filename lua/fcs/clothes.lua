@@ -427,9 +427,9 @@ end
 hook.Add( "PlayerSetModel", "FCS_PlayerSetModel", function( ply )
 	timer.Simple( 0.1, function()
 		if ply:GetModel():Left(#"models/fgut") == "models/fgut" then
-			self:FCSEquipDefaults( false, false )
+			ply:FCSEquipDefaults( false, false )
 		else
-			self:FCSUnequipAll()
+			ply:FCSUnequipAll()
 		end
 	end)
 end )
