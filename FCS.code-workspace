@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../fcs_cold_war_us_infantry"
+		},
+		{
+			"path": "../fcs_police"
+		},
+		{
+			"path": "../fcs_tacint"
+		}
+	],
+	"settings": {
+		"editor.detectIndentation": false,
+		"editor.insertSpaces": false
+	}
+}
