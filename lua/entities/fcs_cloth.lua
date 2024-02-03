@@ -87,6 +87,7 @@ if CLIENT then
 					self.FakeClothes.RGE = rge
 					self.FakeClothes.God = ply
 					self.FakeClothes:AddEffects( EF_BONEMERGE )
+					self.FakeClothes:SetSkin( self:GetSkin() )
 					self.FakeClothes:AddEffects( EF_BONEMERGE_FASTCULL )
 					self.FakeClothes:SetParent( rge )
 
