@@ -442,6 +442,20 @@ FCS.DefineItem("p_admin", {
 	Model = "models/fgut/hl2rp/admin_legs_01.mdl",
 })
 
+FCS.DefineItem("p_admin2", {
+	PrintName = "Suit Pants (Purple)",
+	Type = FCS_PANTS,
+	Model = "models/fgut/hl2rp/admin_legs_01.mdl",
+	Skin = 1,
+})
+
+FCS.DefineItem("p_admin3", {
+	PrintName = "Suit Pants (Blue)",
+	Type = FCS_PANTS,
+	Model = "models/fgut/hl2rp/admin_legs_01.mdl",
+	Skin = 2,
+})
+
 FCS.DefineItem("p_surplus", {
 	PrintName = "Surplus Pants",
 	Type = FCS_PANTS,
