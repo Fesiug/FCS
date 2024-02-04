@@ -152,11 +152,19 @@ end
 
 function FCS.DefineItem( ID, Table )
 	FCS.Items[ID] = Table
+	if !Table.Icon then
+		local matname = "materials/fcs/items/" .. ID .. ".png"
+		Table.Icon = Material(matname)
+		Table.IconPath = matname
+	else
+		Table.IconPath = Table.Icon
+		Table.Icon = Material(Table.Icon)
+	end
 
 	do
 		local tent = {}
 		tent.Base = "fcs_item"
-		tent.IconOverride = "materials/fcs/items/" .. ID .. ".png"
+		tent.IconOverride = Table.IconPath
 		tent.PrintName = Table.PrintName or ID
 		tent.Spawnable = true
 		tent.AdminOnly = false

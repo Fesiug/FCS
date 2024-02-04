@@ -79,15 +79,23 @@ if CLIENT then
 		if surface.GetTextSize(text) > (32/0.1) then
 			tobig = true
 		end
+		self.IconCache = self.IconCache or FCS.GetItem(self.ItemToGive).Icon
 		for i=1, 2 do
 			if i==2 then
 				angle:RotateAroundAxis( angle:Right(), 180 )
 			end
 			local pos = self:GetPos()
 			pos:Add( angle:Up() * 6.2 )
-			pos:Add( angle:Right() * (tobig and 0 or -1) )
+			pos:Add( angle:Right() * 1.33 )
 			cam.Start3D2D( pos, angle, 0.1 )
-				draw.SimpleText( text, (tobig and "FCS_Item2" or "FCS_Item"), 0, 0, color_white, TEXT_ALIGN_CENTER )
+				surface.SetMaterial( self.IconCache )
+				surface.SetDrawColor( 255, 255, 255 )
+
+				local size = 166
+				surface.DrawTexturedRect( -(size/2), -(size/2), size, size )
+
+				draw.SimpleText( text, (tobig and "FCS_Item2" or "FCS_Item"), 2, 2, color_black, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+				draw.SimpleText( text, (tobig and "FCS_Item2" or "FCS_Item"), 0, 0, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 			cam.End3D2D()
 		end
 	end
