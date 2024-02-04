@@ -752,38 +752,30 @@ function FCS.Random( typee )
 end
 
 if CLIENT then
-	local sc2 = true
-	local sc3 = true
 	local ApproveList = {
-		["ValveBiped.Bip01_R_Clavicle"]		= sc2,
-		["ValveBiped.Bip01_R_UpperArm"]		= sc2,
-		["ValveBiped.Bip01_R_Elbow"]		= sc2,
-		["ValveBiped.Bip01_R_Shoulder"]		= sc2,
-		["ValveBiped.Bip01_R_Bicep"]		= sc2,
-		["ValveBiped.Bip01_R_Trapezius"]	= sc2,
+		["ValveBiped.Bip01_R_Clavicle"]		= true,
+		["ValveBiped.Bip01_R_UpperArm"]		= true,
+		["ValveBiped.Bip01_R_Elbow"]		= true,
+		["ValveBiped.Bip01_R_Shoulder"]		= true,
+		["ValveBiped.Bip01_R_Bicep"]		= true,
+		["ValveBiped.Bip01_R_Trapezius"]	= true,
 
-		["ValveBiped.Bip01_L_Clavicle"]		= sc2,
-		["ValveBiped.Bip01_L_UpperArm"]		= sc2,
-		["ValveBiped.Bip01_L_Elbow"]		= sc2,
-		["ValveBiped.Bip01_L_Shoulder"]		= sc2,
-		["ValveBiped.Bip01_L_Bicep"]		= sc2,
-		["ValveBiped.Bip01_L_Trapezius"]	= sc2,
+		["ValveBiped.Bip01_L_Clavicle"]		= true,
+		["ValveBiped.Bip01_L_UpperArm"]		= true,
+		["ValveBiped.Bip01_L_Elbow"]		= true,
+		["ValveBiped.Bip01_L_Shoulder"]		= true,
+		["ValveBiped.Bip01_L_Bicep"]		= true,
+		["ValveBiped.Bip01_L_Trapezius"]	= true,
 		
-		["ValveBiped.Bip01_R_Forearm"]		= {
-			translate = Vector( 0, 0, -1 ),
-			rotate = Angle( -2, 0, 0 ),
-		},
-		["ValveBiped.Bip01_R_Hand"]			= sc3,
-		["ValveBiped.Bip01_R_Ulna"]			= sc3,
-		["ValveBiped.Bip01_R_Wrist"]		= sc3,
+		["ValveBiped.Bip01_R_Forearm"]		= true,
+		["ValveBiped.Bip01_R_Hand"]			= true,
+		["ValveBiped.Bip01_R_Ulna"]			= true,
+		["ValveBiped.Bip01_R_Wrist"]		= true,
 
-		["ValveBiped.Bip01_L_Forearm"]		= {
-			translate = Vector( 0, 0, 1 ),
-			rotate = Angle( 2, 0, 0 ),
-		},
-		["ValveBiped.Bip01_L_Hand"]			= sc3,
-		["ValveBiped.Bip01_L_Ulna"]			= sc3,
-		["ValveBiped.Bip01_L_Wrist"]		= sc3,
+		["ValveBiped.Bip01_L_Forearm"]		= true,
+		["ValveBiped.Bip01_L_Hand"]			= true,
+		["ValveBiped.Bip01_L_Ulna"]			= true,
+		["ValveBiped.Bip01_L_Wrist"]		= true,
 
 		["ValveBiped.Bip01_R_Finger0"]		= true,
 		["ValveBiped.Bip01_R_Finger01"]		= true,
@@ -821,13 +813,13 @@ if CLIENT then
 	local JohnNintendo = {
 		--["ValveBiped.Bip01_R_Forearm"]		= true,
 		["ValveBiped.Bip01_R_Hand"]			= true,
-		["ValveBiped.Bip01_R_Ulna"]			= true,
-		["ValveBiped.Bip01_R_Wrist"]		= true,
+		--["ValveBiped.Bip01_R_Ulna"]			= true,
+		--["ValveBiped.Bip01_R_Wrist"]		= true,
 
 		--["ValveBiped.Bip01_L_Forearm"]		= true,
 		["ValveBiped.Bip01_L_Hand"]			= true,
-		["ValveBiped.Bip01_L_Ulna"]			= true,
-		["ValveBiped.Bip01_L_Wrist"]		= true,
+		--["ValveBiped.Bip01_L_Ulna"]			= true,
+		--["ValveBiped.Bip01_L_Wrist"]		= true,
 
 		["ValveBiped.Bip01_R_Finger0"]		= true,
 		["ValveBiped.Bip01_R_Finger01"]		= true,
@@ -925,17 +917,17 @@ if CLIENT then
 							Matri:Scale( vector_origin )
 						else
 							Matri:SetScale( M2 )
-							if istable(entry) then
-								if entry.translate then
-									Matri:Translate( entry.translate )
-								end
-								if entry.rotate then
-									Matri:Rotate( entry.rotate )
-								end
-								if entry.scale then
-									Matri:Scale( entry.scale )
-								end
-							end
+							--if istable(entry) then
+							--	if entry.translate then
+							--		Matri:Translate( entry.translate )
+							--	end
+							--	if entry.rotate then
+							--		Matri:Rotate( entry.rotate )
+							--	end
+							--	if entry.scale then
+							--		Matri:Scale( entry.scale )
+							--	end
+							--end
 						end
 						MD:SetBoneMatrix( i, Matri )
 					end
