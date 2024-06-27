@@ -80,6 +80,11 @@ if CLIENT then
 			if SUPERDEATH:IsValid() then
 				rge = SUPERDEATH
 			end
+			-- Immersive Death integration
+			local imde_rge = IMDE and ply:IMDE_GetRagdoll()
+			if IsValid(imde_rge) then
+				rge = imde_rge
+			end
 			if rge:IsValid() then
 				if !IsValid( self.FakeClothes ) then
 					self.FakeClothes = ClientsideModel( self:GetModel() )

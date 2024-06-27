@@ -49,6 +49,7 @@ hook.Add("HUDPaint", "TEST_HUDPaint", function()
 	local p = LocalPlayer()
 	local e, a = p:EyePos(), p:EyeAngles()
 	local lap = p:GetAttachment(p:LookupAttachment("eyes"))
+	if !lap then return end
 	e = Vector( Lerp( scaleme, e.x, lap.Pos.x), Lerp( scaleme, e.y, lap.Pos.y), lap.Pos.z )
 	e.z = e.z - Lerp( math.ease.OutQuint( scaleme ), 30, 1 )
 	a.p = 0
