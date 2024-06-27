@@ -112,7 +112,7 @@ if CLIENT then
 					self.FakeClothes:Remove()
 				end
 			end
-			if ply:Alive() then
+			if ply:Alive() and !ply:GetNoDraw() then
 				self:DrawModel()
 			else
 				return
