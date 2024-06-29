@@ -29,8 +29,11 @@ function ENT:Think()
 			self:Remove()
 			return
 		end
+	else
 		local ply = self:GetFCSOwner()
-		self:DrawShadow( !ply:GetRagdollEntity():IsValid() )
+		if ply:IsPlayer() then
+			self:DrawShadow(ply:Alive() and !ply:GetNoDraw())
+		end
 	end
 end
 
@@ -66,7 +69,7 @@ if CLIENT then
 	FCS_CSModelTable = FCS_CSModelTable or {}
 	function ENT:Draw()
 		local ply = self:GetFCSOwner()
-		if ply:IsValid() then
+		if ply:IsValid() and ply:IsPlayer() then
 			local item = self:GetItemTable()
 			-- Keep setting this in case of emergency
 			self:SetParent( ply )
@@ -80,11 +83,7 @@ if CLIENT then
 			if SUPERDEATH:IsValid() then
 				rge = SUPERDEATH
 			end
-			-- Immersive Death integration
-			local imde_rge = IMDE and ply:IMDE_GetRagdoll()
-			if IsValid(imde_rge) then
-				rge = imde_rge
-			end
+
 			if rge:IsValid() then
 				if !IsValid( self.FakeClothes ) then
 					self.FakeClothes = ClientsideModel( self:GetModel() )
@@ -115,10 +114,11 @@ if CLIENT then
 			if ply:Alive() and !ply:GetNoDraw() then
 				self:DrawModel()
 			else
+				self:DestroyShadow()
 				return
 			end
-		else
-			print( ply, " is INVALID. What the fuck?!" )
+		elseif ply:GetClass() == "prop_ragdoll" then
+			self:DrawModel()
 		end
 	end
 

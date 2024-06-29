@@ -348,7 +348,7 @@ function PT:FCSEquip( ID, DontDrop, DontEvaluate )
 		self:FCSEvaluateNaked()
 		self:FCSEvaluateFlags()
 	end
-	return true
+	return Fuck
 end
 
 function PT:FCSGetSlotEntity( Slot )
@@ -392,6 +392,18 @@ function PT:FCSRemoveSlot( Slot, DontDrop )
 	self:FCSEvaluateNaked()
 	self:FCSEvaluateFlags()
 	return true
+end
+
+function PT:FCSGetEntities()
+	local tbl = {}
+	for i, slot in ipairs(FCS.TL) do
+		local nw2 = "FCS_" .. FCS.TTS[slot]
+		local ent = self:GetNW2Entity(nw2, NULL)
+		if IsValid(ent) and !table.HasValue(tbl, ent) then
+			table.insert(tbl, ent)
+		end
+	end
+	return tbl
 end
 
 hook.Add( "PlayerSpawn", "FCS_PlayerSpawn", function( ply )
