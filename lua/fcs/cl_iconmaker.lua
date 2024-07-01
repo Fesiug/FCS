@@ -126,20 +126,24 @@ if false and CLIENT then
 			local POS, ANG, CL = POS_SHIRT, ANG_SHIRT, CL_SHIRT
 			
 			if HasT(FCS_EYES, v.Type) or HasT(FCS_MOUTH, v.Type) then
-				do continue end
+				--do continue end
 				POS, ANG, CL = POS_EYES, ANG_EYES, CL_EYES
 			elseif HasT(FCS_HAT, v.Type) then
-				do continue end
+				--do continue end
 				POS, ANG, CL = POS_HEAD, ANG_HEAD, CL_HEAD
 			elseif HasT(FCS_BACK, v.Type) then
 				--do continue end
 				POS, ANG, CL = POS_BACK, ANG_BACK, CL_BACK
 			elseif HasT(FCS_PANTS, v.Type) then
-				do continue end
+				--do continue end
 				POS, ANG, CL = POS_PANTS, ANG_PANTS, CL_PANTS
+			elseif HasT(FCS_EARS, v.Type) then
+				--do continue end
+				POS, ANG, CL = POS_EYES, ANG_EYES, CL_EYES
 			else
-				do continue end
+				--do continue end
 			end
+			
 
 			render.SetLocalModelLights(CL)
 			
